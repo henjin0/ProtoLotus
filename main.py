@@ -21,6 +21,9 @@ class app_1(QtWidgets.QDialog, mainui.Ui_Dialog):
         axis.setSpacing(x=1,y=1,z=1)
         self.openGLWidget.addItem(axis)
 
+        self.holePatternCombobox.addItems(['3mm', '4.8mm'])
+        self.holePatternCombobox.setCurrentIndex(0)
+
         self.lastDir = None
         self.droppedFilename = None
         self.currentSTL = None
@@ -70,7 +73,7 @@ class app_1(QtWidgets.QDialog, mainui.Ui_Dialog):
             else:
                 newItem = QtWidgets.QTableWidgetItem(f"{int(self.tableWidget.item(row,column).text(),10) + 1}")
             
-            print(f"{int(self.tableWidget.item(row,column).text(),10) + 1}")
+            #print(f"{int(self.tableWidget.item(row,column).text(),10) + 1}")
             self.tableWidget.setItem(row,column,newItem)
         else:
             self.tableWidget.setItem(row,column,QtWidgets.QTableWidgetItem("0"))
@@ -79,10 +82,10 @@ class app_1(QtWidgets.QDialog, mainui.Ui_Dialog):
             self.colorlist[int(self.tableWidget.item(row,column).text(),10)])
 
         datas = self.getTableValue()
-        self.curMesh, self.glAllMesh = NumpyArrayToHolePlate.NumpyArrayToPlate(np.array(datas),'4.8mm',self.colorlist2)
+        self.curMesh, self.glAllMesh = NumpyArrayToHolePlate.NumpyArrayToPlate(np.array(datas),self.holePatternCombobox.currentText(),self.colorlist2)
         self.showGLAllMesh()
 
-        print(datas)
+        #print(datas)
 
     @QtCore.pyqtSlot()
     def on_push_b1(self):

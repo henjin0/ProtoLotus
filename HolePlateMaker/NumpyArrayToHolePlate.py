@@ -52,7 +52,7 @@ def NumpyArrayToPlate(plateData,type,color):
                 glMesh = gl.GLMeshItem(meshdata=meshdata, smooth=True,\
                         drawFaces=True, drawEdges=False, edgeColor=(0, 0, 0, 1))
                 glMesh.setColor(color[plateData[i][j]])
-                print(f"color={color[plateData[i][j]]}")
+                #print(f"color={color[plateData[i][j]]}")
                 glMesh.scale(0.1,0.1,0.1)
                 glAllMesh.append(glMesh)
                 
