@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file 'ui_files/main2.ui'
+# Form implementation generated from reading ui file 'ui_files/main.ui'
 #
 # Created by: PyQt6 UI code generator 6.3.0
 #
@@ -34,6 +34,12 @@ class Ui_Dialog(object):
         self.tableWidget.setObjectName("tableWidget")
         self.tableWidget.horizontalHeader().setDefaultSectionSize(20)
         self.tableWidget.horizontalHeader().setMinimumSectionSize(19)
+        self.holePatternCombobox = QtWidgets.QComboBox(Dialog)
+        self.holePatternCombobox.setGeometry(QtCore.QRect(810, 40, 104, 26))
+        self.holePatternCombobox.setObjectName("holePatternCombobox")
+        self.label = QtWidgets.QLabel(Dialog)
+        self.label.setGeometry(QtCore.QRect(820, 20, 81, 16))
+        self.label.setObjectName("label")
 
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
@@ -42,4 +48,5 @@ class Ui_Dialog(object):
         _translate = QtCore.QCoreApplication.translate
         Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
         self.pushButton.setText(_translate("Dialog", "Save STL"))
+        self.label.setText(_translate("Dialog", "hole pattern"))
 from pyqtgraph.opengl import GLViewWidget

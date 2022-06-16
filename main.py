@@ -11,6 +11,7 @@ class app_1(QtWidgets.QDialog, mainui.Ui_Dialog):
     def __init__(self):
         super(app_1,self).__init__()
         self.setupUi(self)
+        self.setWindowTitle("ProtoLotus")
         self.pushButton.clicked.connect(self.on_push_b1)
         self.tableWidget.cellClicked.connect(self.on_clickcell)
         self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.EditTrigger.NoEditTriggers)
@@ -23,6 +24,8 @@ class app_1(QtWidgets.QDialog, mainui.Ui_Dialog):
         self.lastDir = None
         self.droppedFilename = None
         self.currentSTL = None
+        self.glAllMesh = None
+        self.bufGLAllMesh = None
 
         self.colorlist = [QtGui.QColor(255,255,255),\
                 QtGui.QColor(96,240,168),\
@@ -33,6 +36,16 @@ class app_1(QtWidgets.QDialog, mainui.Ui_Dialog):
                 QtGui.QColor(240,240,96),\
                 QtGui.QColor(96,96,240),\
                 QtGui.QColor(0,255,0),\
+                ]
+        self.colorlist2 = [(255/255,255/255,255/255,1),\
+                (96/255,240/255,168/255,1),\
+                (240/255,168/255,96/255,1),\
+                (240/255,96/255,96/255,1),\
+                (168/255,96/255,240/255,1),\
+                (96/255,240/255,240/255,1),\
+                (240/255,240/255,96/255,1),\
+                (96/255,96/255,240/255,1),\
+                (0/255,255/255,0/255,1),\
                 ]
 
     def initTableValue(self):
@@ -62,11 +75,12 @@ class app_1(QtWidgets.QDialog, mainui.Ui_Dialog):
         else:
             self.tableWidget.setItem(row,column,QtWidgets.QTableWidgetItem("0"))
         
-        self.tableWidget.item(row,column).setBackground(self.colorlist[int(self.tableWidget.item(row,column).text(),10)])
+        self.tableWidget.item(row,column).setBackground(\
+            self.colorlist[int(self.tableWidget.item(row,column).text(),10)])
 
         datas = self.getTableValue()
-        self.curMesh = NumpyArrayToHolePlate.NumpyArrayToPlate(np.array(datas),'4.8mm')
-        self.showMesh()
+        self.curMesh, self.glAllMesh = NumpyArrayToHolePlate.NumpyArrayToPlate(np.array(datas),'4.8mm',self.colorlist2)
+        self.showGLAllMesh()
 
         print(datas)
 
@@ -75,37 +89,15 @@ class app_1(QtWidgets.QDialog, mainui.Ui_Dialog):
         filepath = QtWidgets.QFileDialog.getSaveFileName(self, 'Save File',"~/.", ("STL file (*.stl)"))
         self.curMesh.save(filepath[0])
         
+    def showGLAllMesh(self):
+        if self.bufGLAllMesh:
+            for i in range(len(self.bufGLAllMesh)):
+                self.openGLWidget.removeItem(self.bufGLAllMesh[i])
 
-    def showMesh(self):
-        viewCurMesh = self.curMesh
-        # note: 重心を揃える
-        volume, cog, inertia = viewCurMesh.get_mass_properties()
-        viewCurMesh.translate(-cog)
+        for i in range(len(self.glAllMesh)):
+            self.openGLWidget.addItem(self.glAllMesh[i])
         
-        shape = viewCurMesh.points.shape
-        points = viewCurMesh.points.reshape(-1, 3)
-        faces = np.arange(points.shape[0]).reshape(-1, 3)
-        meshdata = gl.MeshData(vertexes=points, faces=faces)
-        mesh = gl.GLMeshItem(meshdata=meshdata, smooth=True,\
-            drawFaces=True, drawEdges=False, edgeColor=(0, 0, 0, 1))
-        mesh.scale(0.1,0.1,0.1)
-        if self.currentSTL:
-            self.openGLWidget.removeItem(self.currentSTL)
-        self.openGLWidget.addItem(mesh)
-        self.currentSTL = mesh
-
-
-    def showSTL(self,filename):
-        if self.currentSTL:
-            self.openGLWidget.removeItem(self.currentSTL)
-        
-        points, faces = self.loadSTL(filename)
-        meshdata = gl.MeshData(vertexes=points, faces=faces)
-        mesh = gl.GLMeshItem(meshdata=meshdata, smooth=True,\
-            drawFaces=False, drawEdges=True, edgeColor=(0, 1, 0, 1))
-        self.openGLWidget.addItem(mesh)
-
-        self.currentSTL = mesh
+        self.bufGLAllMesh = self.glAllMesh
 
     def loadSTL(self, filename):
         m = mesh.Mesh.from_file(filename)

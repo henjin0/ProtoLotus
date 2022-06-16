@@ -92,6 +92,32 @@
    <column/>
    <column/>
   </widget>
+  <widget class="QComboBox" name="holePatternCombobox">
+   <property name="geometry">
+    <rect>
+     <x>810</x>
+     <y>40</y>
+     <width>104</width>
+     <height>26</height>
+    </rect>
+   </property>
+   <property name="currentText">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>820</x>
+     <y>20</y>
+     <width>81</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>hole pattern</string>
+   </property>
+  </widget>
  </widget>
  <customwidgets>
   <customwidget>
