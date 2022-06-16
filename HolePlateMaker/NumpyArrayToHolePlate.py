@@ -50,7 +50,7 @@ def NumpyArrayToPlate(plateData,type,color):
                 faces = np.arange(points.shape[0]).reshape(-1, 3)
                 meshdata = gl.MeshData(vertexes=points, faces=faces)
                 glMesh = gl.GLMeshItem(meshdata=meshdata, smooth=True,\
-                        drawFaces=True, drawEdges=False, edgeColor=(0, 0, 0, 1))
+                        drawFaces=True, drawEdges=False, edgeColor=(0, 0, 0, 1), shader='edgeHilight')
                 glMesh.setColor(color[plateData[i][j]])
                 #print(f"color={color[plateData[i][j]]}")
                 glMesh.scale(0.1,0.1,0.1)

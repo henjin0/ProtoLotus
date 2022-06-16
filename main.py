@@ -9,6 +9,28 @@ from stl import mesh
 
 class app_1(QtWidgets.QDialog, mainui.Ui_Dialog):
     def __init__(self):
+
+        self.colorlist = [QtGui.QColor(70,70,70),\
+                QtGui.QColor(96,240,168),\
+                QtGui.QColor(240,168,96),\
+                QtGui.QColor(240,96,96),\
+                QtGui.QColor(168,96,240),\
+                QtGui.QColor(96,240,240),\
+                QtGui.QColor(240,240,96),\
+                QtGui.QColor(96,96,240),\
+                QtGui.QColor(0,255,0),\
+                ]
+        self.colorlist2 = [(255/255,255/255,255/255,1),\
+                (96/(255*1.5),240/(255*1.5),168/(255*1.5),1),\
+                (240/(255*1.5),168/(255*1.5),96/(255*1.5),1),\
+                (240/(255*1.5),96/(255*1.5),96/(255*1.5),1),\
+                (168/(255*1.5),96/(255*1.5),240/(255*1.5),1),\
+                (96/(255*1.5),240/(255*1.5),240/(255*1.5),1),\
+                (240/(255*1.5),240/(255*1.5),96/(255*1.5),1),\
+                (96/(255*1.5),96/(255*1.5),240/(255*1.5),1),\
+                (0/(255*1.5),255/(255*1.5),0/(255*1.5),1),\
+                ]
+
         super(app_1,self).__init__()
         self.setupUi(self)
         self.setWindowTitle("ProtoLotus")
@@ -23,6 +45,7 @@ class app_1(QtWidgets.QDialog, mainui.Ui_Dialog):
 
         self.holePatternCombobox.addItems(['3mm', '4.8mm'])
         self.holePatternCombobox.setCurrentIndex(0)
+        self.holePatternCombobox.currentIndexChanged.connect(self.changeIndex)
 
         self.lastDir = None
         self.droppedFilename = None
@@ -30,31 +53,20 @@ class app_1(QtWidgets.QDialog, mainui.Ui_Dialog):
         self.glAllMesh = None
         self.bufGLAllMesh = None
 
-        self.colorlist = [QtGui.QColor(255,255,255),\
-                QtGui.QColor(96,240,168),\
-                QtGui.QColor(240,168,96),\
-                QtGui.QColor(240,96,96),\
-                QtGui.QColor(168,96,240),\
-                QtGui.QColor(96,240,240),\
-                QtGui.QColor(240,240,96),\
-                QtGui.QColor(96,96,240),\
-                QtGui.QColor(0,255,0),\
-                ]
-        self.colorlist2 = [(255/255,255/255,255/255,1),\
-                (96/255,240/255,168/255,1),\
-                (240/255,168/255,96/255,1),\
-                (240/255,96/255,96/255,1),\
-                (168/255,96/255,240/255,1),\
-                (96/255,240/255,240/255,1),\
-                (240/255,240/255,96/255,1),\
-                (96/255,96/255,240/255,1),\
-                (0/255,255/255,0/255,1),\
-                ]
+
+    def changeIndex(self,index):
+        datas = self.getTableValue()
+        self.curMesh, self.glAllMesh = NumpyArrayToHolePlate.NumpyArrayToPlate(np.array(datas),self.holePatternCombobox.currentText(),self.colorlist2)
+        self.showGLAllMesh()
+
 
     def initTableValue(self):
         for i in range(self.tableWidget.columnCount()):
             for j in range(self.tableWidget.rowCount()):
                 self.tableWidget.setItem(j,i,QtWidgets.QTableWidgetItem("0"))
+                self.tableWidget.item(j,i).setBackground(\
+                    self.colorlist[0])
+
 
     def getTableValue(self):
         datas = []
