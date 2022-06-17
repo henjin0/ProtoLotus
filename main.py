@@ -102,7 +102,9 @@ class app_1(QtWidgets.QDialog, mainui.Ui_Dialog):
     @QtCore.pyqtSlot()
     def on_push_b1(self):
         filepath = QtWidgets.QFileDialog.getSaveFileName(self, 'Save File',"~/.", ("STL file (*.stl)"))
-        self.curMesh.save(filepath[0])
+        if filepath[0] != "":
+            self.curMesh.save(filepath[0])
+            QtWidgets.QMessageBox.information(self, "file",f"STLファイルの出力が完了しました。\n出力先:{filepath[0]}")
         
     def showGLAllMesh(self):
         if self.bufGLAllMesh:
