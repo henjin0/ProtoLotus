@@ -52,12 +52,13 @@ class app_1(QtWidgets.QDialog, mainui.Ui_Dialog):
         self.currentSTL = None
         self.glAllMesh = None
         self.bufGLAllMesh = None
+        self.OPlist = []
 
 
     def changeIndex(self,index):
-        datas = self.getTableValue()
-        self.curMesh, self.glAllMesh = NumpyArrayToHolePlate.NumpyArrayToPlate(np.array(datas),self.holePatternCombobox.currentText(),self.colorlist2)
-        self.showGLAllMesh()
+        self.deleteAllShowMesh()
+        self.changeAllOPType(self.holePatternCombobox.currentText())
+        self.addAllShowMesh()
 
 
     def initTableValue(self):
@@ -94,8 +95,29 @@ class app_1(QtWidgets.QDialog, mainui.Ui_Dialog):
             self.colorlist[int(self.tableWidget.item(row,column).text(),10)])
 
         datas = self.getTableValue()
-        self.curMesh, self.glAllMesh = NumpyArrayToHolePlate.NumpyArrayToPlate(np.array(datas),self.holePatternCombobox.currentText(),self.colorlist2)
-        self.showGLAllMesh()
+        datas = np.array(datas)
+
+        if int(self.tableWidget.item(row,column).text(),10)==1:
+            addData, self.OPlist = NumpyArrayToHolePlate.GLViewDataPush(datas,\
+                self.holePatternCombobox.currentText(),\
+                self.colorlist2,self.OPlist,row,column)
+            self.addShowMesh(addData.glMesh)
+
+        elif int(self.tableWidget.item(row,column).text(),10)==0:
+            deleteData,self.OPlist = NumpyArrayToHolePlate.GLViewDataPop(datas,\
+                self.holePatternCombobox.currentText(),\
+                self.colorlist2,self.OPlist,row,column)
+            self.deleteShowMesh(deleteData.glMesh)
+
+        else:
+            afterData,beforeData,self.OPlist = NumpyArrayToHolePlate.GLViewDataChange(datas,\
+                self.holePatternCombobox.currentText(),\
+                self.colorlist2,self.OPlist,row,column)
+            self.deleteShowMesh(beforeData.glMesh)
+            self.addShowMesh(afterData.glMesh)
+        
+        # self.curMesh, self.glAllMesh = NumpyArrayToHolePlate.NumpyArrayToPlate(datas,self.holePatternCombobox.currentText(),self.colorlist2)
+        # self.showGLAllMesh()
 
         #print(datas)
 
@@ -105,7 +127,25 @@ class app_1(QtWidgets.QDialog, mainui.Ui_Dialog):
         if filepath[0] != "":
             self.curMesh.save(filepath[0])
             QtWidgets.QMessageBox.information(self, "file",f"STLファイルの出力が完了しました。\n出力先:{filepath[0]}")
-        
+
+    def deleteShowMesh(self,deleteData):
+        self.openGLWidget.removeItem(deleteData)
+    
+    def addShowMesh(self,addData):
+        self.openGLWidget.addItem(addData)
+
+    def deleteAllShowMesh(self):
+        for i in range(len(self.OPlist)):
+            self.openGLWidget.removeItem(self.OPlist[i].glMesh)
+
+    def addAllShowMesh(self):
+        for i in range(len(self.OPlist)):
+            self.openGLWidget.addItem(self.OPlist[i].glMesh)
+    
+    def changeAllOPType(self,type):
+        for i in range(len(self.OPlist)):
+            self.OPlist[i].changeType(type)
+
     def showGLAllMesh(self):
         if self.bufGLAllMesh:
             for i in range(len(self.bufGLAllMesh)):
