@@ -116,16 +116,16 @@ class app_1(QtWidgets.QDialog, mainui.Ui_Dialog):
             self.deleteShowMesh(beforeData.glMesh)
             self.addShowMesh(afterData.glMesh)
         
-        # self.curMesh, self.glAllMesh = NumpyArrayToHolePlate.NumpyArrayToPlate(datas,self.holePatternCombobox.currentText(),self.colorlist2)
-        # self.showGLAllMesh()
-
-        #print(datas)
 
     @QtCore.pyqtSlot()
     def on_push_b1(self):
         filepath = QtWidgets.QFileDialog.getSaveFileName(self, 'Save File',"~/.", ("STL file (*.stl)"))
         if filepath[0] != "":
-            self.curMesh.save(filepath[0])
+            datas = self.getTableValue()
+            datas = np.array(datas)
+
+            curMesh = NumpyArrayToHolePlate.NumpyArrayToPlate(datas,self.holePatternCombobox.currentText())
+            curMesh.save(filepath[0])
             QtWidgets.QMessageBox.information(self, "file",f"STLファイルの出力が完了しました。\n出力先:{filepath[0]}")
 
     def deleteShowMesh(self,deleteData):

@@ -127,24 +127,17 @@ def GLViewDataChange(plateData,type,color,OPlist,row,column):
     OPlist[pos] = afterData
     return afterData,beforeData,OPlist
 
-def NumpyArrayToPlate(plateData,type,color):
+def NumpyArrayToPlate(plateData,type):
     if(not (type=='3mm' or type=='4.8mm')):
         sys.exit('Type support only \'3mm\' or \'4.8mm\'.')
 
     size = plateData.shape
     curMesh = mesh.Mesh(np.array([], dtype=mesh.Mesh.dtype))
-    glAllMesh = []
-
-    OFFSET = [[-round(5*size[0]/2),-round(5*size[1]/2)],\
-        [-round(7.97*size[0]/2),-round(7.97*size[1]/2)]]
-
     for i in np.arange(0,size[0]):
         for j in np.arange(0,size[1]):
             if(plateData[i][j]>0):
                 if(type=='3mm'):
                     newMesh = sbu32.setBU32(i,j,0)
-                    newMesh.translate(np.array([OFFSET[0][0],OFFSET[0][1],0]))
-                    
                 elif(type=='4.8mm'):
                     if(plateData[i][j]==1):
                         newMesh = sbu48.setBU48(i,j,0)
@@ -152,26 +145,8 @@ def NumpyArrayToPlate(plateData,type,color):
                         newMesh = sabu48.setABU48(i,j,0)
                     else:
                         sys.exit('Type \'4.8mm\' only support 0,1,2.')
-                    newMesh.translate(np.array([OFFSET[1][0],OFFSET[1][1],0]))
 
-                
-
-                shape = newMesh.points.shape
-                points = newMesh.points.reshape(-1, 3)
-                faces = np.arange(points.shape[0]).reshape(-1, 3)
-                meshdata = gl.MeshData(vertexes=points, faces=faces)
-                glMesh = gl.GLMeshItem(meshdata=meshdata, smooth=True,\
-                        drawFaces=True, drawEdges=False, edgeColor=(0, 0, 0, 1), shader='edgeHilight')
-                glMesh.setColor(color[plateData[i][j]])
-                #print(f"color={color[plateData[i][j]]}")
-                glMesh.scale(0.1,0.1,0.1)
-                glAllMesh.append(glMesh)
                 
                 curMesh = ab.addBlock(curMesh, newMesh)
     
-    x,y,z = mesh_location_zero(curMesh)
-
-    for i in range(len(glAllMesh)):
-        glAllMesh[i].translate(-x,-y,-z)
-
-    return curMesh,glAllMesh
+    return curMesh
