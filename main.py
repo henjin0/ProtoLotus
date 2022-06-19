@@ -47,11 +47,6 @@ class app_1(QtWidgets.QDialog, mainui.Ui_Dialog):
         self.holePatternCombobox.setCurrentIndex(0)
         self.holePatternCombobox.currentIndexChanged.connect(self.changeIndex)
 
-        self.lastDir = None
-        self.droppedFilename = None
-        self.currentSTL = None
-        self.glAllMesh = None
-        self.bufGLAllMesh = None
         self.OPlist = []
 
 
@@ -145,23 +140,6 @@ class app_1(QtWidgets.QDialog, mainui.Ui_Dialog):
     def changeAllOPType(self,type):
         for i in range(len(self.OPlist)):
             self.OPlist[i].changeType(type)
-
-    def showGLAllMesh(self):
-        if self.bufGLAllMesh:
-            for i in range(len(self.bufGLAllMesh)):
-                self.openGLWidget.removeItem(self.bufGLAllMesh[i])
-
-        for i in range(len(self.glAllMesh)):
-            self.openGLWidget.addItem(self.glAllMesh[i])
-        
-        self.bufGLAllMesh = self.glAllMesh
-
-    def loadSTL(self, filename):
-        m = mesh.Mesh.from_file(filename)
-        shape = m.points.shape
-        points = m.points.reshape(-1, 3)
-        faces = np.arange(points.shape[0]).reshape(-1, 3)
-        return points, faces
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)

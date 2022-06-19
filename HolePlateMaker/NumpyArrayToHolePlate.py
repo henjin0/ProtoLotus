@@ -87,18 +87,6 @@ class OP:
     def changeType(self,type):
         self.createMesh(type)
 
-
-
-def GLViewDataStruct(plateData,type,color):
-    if(not (type=='3mm' or type=='4.8mm')):
-        sys.exit('Type support only \'3mm\' or \'4.8mm\'.')
-    
-    npPlateData = np.array(plateData)
-    ind = npPlateData.nonzero()
-
-    OPlist = np.array(dtype=OP)
-    for i in range(len(ind[0])):
-        OPlist.append(OP(plateData,color,type,ind[0][i],ind[1][i]))
   
 def GLViewDataPush(plateData,type,color,OPlist,row,column):
     if(not (type=='3mm' or type=='4.8mm')):

@@ -17,7 +17,7 @@ class Ui_Dialog(object):
         font.setFamily("Times New Roman")
         Dialog.setFont(font)
         self.pushButton = QtWidgets.QPushButton(Dialog)
-        self.pushButton.setGeometry(QtCore.QRect(320, 610, 113, 32))
+        self.pushButton.setGeometry(QtCore.QRect(320, 610, 151, 32))
         self.pushButton.setObjectName("pushButton")
         self.openGLWidget = GLViewWidget(Dialog)
         self.openGLWidget.setGeometry(QtCore.QRect(20, 10, 761, 581))
@@ -47,6 +47,6 @@ class Ui_Dialog(object):
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
         Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
-        self.pushButton.setText(_translate("Dialog", "Save STL"))
+        self.pushButton.setText(_translate("Dialog", "Output STL file"))
         self.label.setText(_translate("Dialog", "hole pattern"))
 from pyqtgraph.opengl import GLViewWidget
