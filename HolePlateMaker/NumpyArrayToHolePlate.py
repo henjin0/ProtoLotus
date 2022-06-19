@@ -48,16 +48,22 @@ class OP:
 
 
     def createMesh(self,type):
+
+        OFFSET = [[-round(5*self.columnMax/2),-round(5*self.rowMax/2)],\
+        [-round(7.97*self.columnMax/2),-round(7.97*self.rowMax/2)]]
+
         if(self.value>0):
             if(type=='3mm'):
                 newMesh = sbu32.setBU32(self.row,self.column,0)
+                newMesh.translate(np.array([OFFSET[0][0],OFFSET[0][1],0]))
             elif(type=='4.8mm'):
                 if(self.value==1):
-                    newMesh = sbu48.setBU48(self.row,self.column,0)
+                    newMesh = sbu48.setBU48(self.row,self.column,0)                
                 elif(self.value==2):
                     newMesh = sabu48.setABU48(self.row,self.column,0)
                 else:
                     sys.exit('Type \'4.8mm\' only support 0,1,2.')
+                newMesh.translate(np.array([OFFSET[1][0],OFFSET[1][1],0]))
         
             shape = newMesh.points.shape
             points = newMesh.points.reshape(-1, 3)
@@ -128,11 +134,17 @@ def NumpyArrayToPlate(plateData,type,color):
     size = plateData.shape
     curMesh = mesh.Mesh(np.array([], dtype=mesh.Mesh.dtype))
     glAllMesh = []
+
+    OFFSET = [[-round(5*size[0]/2),-round(5*size[1]/2)],\
+        [-round(7.97*size[0]/2),-round(7.97*size[1]/2)]]
+
     for i in np.arange(0,size[0]):
         for j in np.arange(0,size[1]):
             if(plateData[i][j]>0):
                 if(type=='3mm'):
                     newMesh = sbu32.setBU32(i,j,0)
+                    newMesh.translate(np.array([OFFSET[0][0],OFFSET[0][1],0]))
+                    
                 elif(type=='4.8mm'):
                     if(plateData[i][j]==1):
                         newMesh = sbu48.setBU48(i,j,0)
@@ -140,6 +152,9 @@ def NumpyArrayToPlate(plateData,type,color):
                         newMesh = sabu48.setABU48(i,j,0)
                     else:
                         sys.exit('Type \'4.8mm\' only support 0,1,2.')
+                    newMesh.translate(np.array([OFFSET[1][0],OFFSET[1][1],0]))
+
+                
 
                 shape = newMesh.points.shape
                 points = newMesh.points.reshape(-1, 3)
