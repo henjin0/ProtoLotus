@@ -1,13 +1,15 @@
 import sys
 from PyQt6 import QtCore,QtGui, QtWidgets #, QtOpenGLWidgets
 import pyqtgraph.opengl as gl
-from ui_files import mainui
+from ui_files import mainwindow
 from HolePlateMaker import NumpyArrayToHolePlate
 
 import numpy as np
 from stl import mesh
 
-class app_1(QtWidgets.QDialog, mainui.Ui_Dialog):
+import json
+
+class app_1(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
     def __init__(self):
 
         self.colorlist = [QtGui.QColor(70,70,70),\
@@ -36,7 +38,9 @@ class app_1(QtWidgets.QDialog, mainui.Ui_Dialog):
         self.setWindowTitle("ProtoLotus")
         self.pushButton.clicked.connect(self.on_push_b1)
         self.tableWidget.cellClicked.connect(self.on_clickcell)
-        self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.EditTrigger.NoEditTriggers)
+        self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.EditTrigger.NoEditTriggers)        
+
+        self.initMenuAndToolbar()
 
         self.initTableValue()
         axis = gl.GLGridItem()
@@ -49,12 +53,21 @@ class app_1(QtWidgets.QDialog, mainui.Ui_Dialog):
 
         self.OPlist = []
 
+    @QtCore.pyqtSlot()
+    def on_push_b1(self):
+        filepath = QtWidgets.QFileDialog.getSaveFileName(self, 'Save File',"~/.", ("STL file (*.stl)"))
+        if filepath[0] != "":
+            datas = self.getTableValue()
+            datas = np.array(datas)
+
+            curMesh = NumpyArrayToHolePlate.NumpyArrayToPlate(datas,self.holePatternCombobox.currentText())
+            curMesh.save(filepath[0])
+            QtWidgets.QMessageBox.information(self, "file",f"STLファイルの出力が完了しました。\n出力先:{filepath[0]}")
 
     def changeIndex(self,index):
         self.deleteAllShowMesh()
         self.changeAllOPType(self.holePatternCombobox.currentText())
         self.addAllShowMesh()
-
 
     def initTableValue(self):
         for i in range(self.tableWidget.columnCount()):
@@ -63,6 +76,12 @@ class app_1(QtWidgets.QDialog, mainui.Ui_Dialog):
                 self.tableWidget.item(j,i).setBackground(\
                     self.colorlist[0])
 
+    def setTableValue(self,data):
+        for i in range(self.tableWidget.columnCount()):
+            for j in range(self.tableWidget.rowCount()):
+                self.tableWidget.setItem(j,i,QtWidgets.QTableWidgetItem(f"{data[j][i]}"))
+                self.tableWidget.item(j,i).setBackground(\
+                    self.colorlist[data[j][i]])
 
     def getTableValue(self):
         datas = []
@@ -110,18 +129,58 @@ class app_1(QtWidgets.QDialog, mainui.Ui_Dialog):
                 self.colorlist2,self.OPlist,row,column)
             self.deleteShowMesh(beforeData.glMesh)
             self.addShowMesh(afterData.glMesh)
-        
 
-    @QtCore.pyqtSlot()
-    def on_push_b1(self):
-        filepath = QtWidgets.QFileDialog.getSaveFileName(self, 'Save File',"~/.", ("STL file (*.stl)"))
+    def initMenuAndToolbar(self):
+        fileOpenAction = QtGui.QAction(QtGui.QIcon('icon/folderopen.png'), 'Open', self)
+        fileOpenAction.setShortcut('Ctrl+O')
+        fileOpenAction.triggered.connect(self.openSettingFile)
+        self.menufiles.addAction(fileOpenAction)
+        self.toolbar = self.addToolBar('Open')
+        self.toolbar.addAction(fileOpenAction)
+
+        fileSaveAction = QtGui.QAction(QtGui.QIcon('icon/savefloppy.png'), 'Save', self)
+        fileSaveAction.setShortcut('Ctrl+S')
+        fileSaveAction.triggered.connect(self.saveSettingFile)
+        self.menufiles.addAction(fileSaveAction)
+        self.toolbar = self.addToolBar('Save')
+        self.toolbar.addAction(fileSaveAction)
+
+    def saveSettingFile(self):
+        datas = self.getTableValue()
+        type = self.holePatternCombobox.currentText()
+
+        filepath = QtWidgets.QFileDialog.getSaveFileName(self, 'Save File',"~/.", ("json file (*.json)"))
         if filepath[0] != "":
             datas = self.getTableValue()
-            datas = np.array(datas)
+            type = self.holePatternCombobox.currentText()
 
-            curMesh = NumpyArrayToHolePlate.NumpyArrayToPlate(datas,self.holePatternCombobox.currentText())
-            curMesh.save(filepath[0])
-            QtWidgets.QMessageBox.information(self, "file",f"STLファイルの出力が完了しました。\n出力先:{filepath[0]}")
+            with open(filepath[0], 'w') as outfile:
+                json.dump({'datas':datas,'type':type},outfile)
+                QtWidgets.QMessageBox.information(self, "file",f"設定ファイルの出力が完了しました。\n出力先:{filepath[0]}")
+
+
+    def openSettingFile(self):
+        print("open file")
+        filepath = QtWidgets.QFileDialog.getOpenFileName(self, 'Open File',"~/.", ("json file (*.json)"))
+
+        if filepath[0] != "":
+            with open(filepath[0], 'r') as json_file:
+                json_data = json.load(json_file)
+                datas = json_data['datas']
+                type = json_data['type']
+                self.setTableValue(datas)
+                self.holePatternCombobox.setCurrentText(type)
+                
+                datas = self.getTableValue()
+                datas = np.array(datas)
+
+                for i in range(self.tableWidget.columnCount()):
+                    for j in range(self.tableWidget.rowCount()):
+                        if datas[i][j] != 0:
+                            addData, self.OPlist = NumpyArrayToHolePlate.GLViewDataPush(datas,\
+                                self.holePatternCombobox.currentText(),\
+                                self.colorlist2,self.OPlist,j,i)
+                            self.addShowMesh(addData.glMesh)
 
     def deleteShowMesh(self,deleteData):
         self.openGLWidget.removeItem(deleteData)
@@ -139,7 +198,7 @@ class app_1(QtWidgets.QDialog, mainui.Ui_Dialog):
     
     def changeAllOPType(self,type):
         for i in range(len(self.OPlist)):
-            self.OPlist[i].changeType(type)
+            self.OPlist[i].changeType(type) 
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
