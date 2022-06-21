@@ -10,7 +10,7 @@
 # 実行方法(バイナリから)
 現状はmacOSのみ対応しています。
 下記リンクからprotolotus.app.zipをDLし、解凍してからご使用ください。
-https://drive.google.com/file/d/1TD7VIhyBL2uoM_b3Gu4_lvom-BJVojED/view?usp=sharing
+https://drive.google.com/file/d/1yv45yj994fWbZyLL3cdTaLUU6_mYVVMA/view?usp=sharing
 
 ```
 mac: protolotus.appを実行
