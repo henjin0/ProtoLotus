@@ -29,6 +29,12 @@ windows: windows10 home x64
 
 <img width="600" alt="ツール実行画面" src="readmeImage/allowsetting.png">
 
+### windows版の注意
+
+「危害を加える可能性～」という警告が出てきますが、無視して継続してDLしてください。
+
+<img width="600" alt="ツール実行画面" src="readmeImage/windows_caution.png">
+
 ### バイナリファイル名
 ```
 mac: protolotus.app
