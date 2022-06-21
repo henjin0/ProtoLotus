@@ -8,9 +8,12 @@
 現在はネジ止め等に有効な3 mm穴とデンマークの某有名ブロックと互換する4.8 mm穴が作成できます。
 
 # 実行方法(バイナリから)
-直下にあるバイナリファイルをダブルクリックして実行してください。
+現状はmacOSのみ対応しています。
+下記リンクからprotolotus.app.zipをDLし、解凍してからご使用ください。
+https://drive.google.com/file/d/1TD7VIhyBL2uoM_b3Gu4_lvom-BJVojED/view?usp=sharing
+
 ```
-mac: protolotus.app
+mac: protolotus.appを実行
 （作成予定）windows: protolotus.exe
 ```
 
