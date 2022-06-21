@@ -9,7 +9,7 @@
 
 # 実行方法(バイナリから)
 現状はmacOSのみ対応しています。
-下記リンクからprotolotus.app.zipをDLし、解凍してからご使用ください。
+下記リンクからprotolotus.zipをDLし、解凍してからご使用ください。
 https://drive.google.com/file/d/1yv45yj994fWbZyLL3cdTaLUU6_mYVVMA/view?usp=sharing
 
 ```
