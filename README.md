@@ -31,7 +31,7 @@ windows: windows10 home x64
 
 ### windows版の注意
 
-「危害を加える可能性～」という警告が出てきますが、無視して継続してDLしてください。
+「危害を及ぼす可能性～」という警告が出てきますが、無視して継続してDLしてください。
 
 <img width="600" alt="ツール実行画面" src="readmeImage/windows_caution.png">
 
