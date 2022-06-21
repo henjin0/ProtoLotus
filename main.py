@@ -1,4 +1,4 @@
-import sys
+import sys,os
 from PyQt6 import QtCore,QtGui, QtWidgets #, QtOpenGLWidgets
 import pyqtgraph.opengl as gl
 from ui_files import mainwindow
@@ -8,6 +8,11 @@ import numpy as np
 from stl import mesh
 
 import json
+
+def resourcePath(filename):
+  if hasattr(sys, "_MEIPASS"):
+      return os.path.join(sys._MEIPASS, filename)
+  return os.path.join(filename)
 
 class app_1(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
     def __init__(self):
@@ -131,14 +136,14 @@ class app_1(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
             self.addShowMesh(afterData.glMesh)
 
     def initMenuAndToolbar(self):
-        fileOpenAction = QtGui.QAction(QtGui.QIcon('icon/folderopen.png'), 'Open', self)
+        fileOpenAction = QtGui.QAction(QtGui.QIcon(resourcePath('icon/folderopen.png')), 'Open', self)
         fileOpenAction.setShortcut('Ctrl+O')
         fileOpenAction.triggered.connect(self.openSettingFile)
         self.menufiles.addAction(fileOpenAction)
         self.toolbar = self.addToolBar('Open')
         self.toolbar.addAction(fileOpenAction)
 
-        fileSaveAction = QtGui.QAction(QtGui.QIcon('icon/savefloppy.png'), 'Save', self)
+        fileSaveAction = QtGui.QAction(QtGui.QIcon(resourcePath('icon/savefloppy.png')), 'Save', self)
         fileSaveAction.setShortcut('Ctrl+S')
         fileSaveAction.triggered.connect(self.saveSettingFile)
         self.menufiles.addAction(fileSaveAction)
@@ -165,14 +170,16 @@ class app_1(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
 
         if filepath[0] != "":
             with open(filepath[0], 'r') as json_file:
+                self.deleteAllShowMesh()
+                self.OPlist.clear()
+
                 json_data = json.load(json_file)
                 datas = json_data['datas']
-                type = json_data['type']
-                self.setTableValue(datas)
-                self.holePatternCombobox.setCurrentText(type)
-                
-                datas = self.getTableValue()
                 datas = np.array(datas)
+                type = json_data['type']
+
+                self.setTableValue(datas.T)
+                self.holePatternCombobox.setCurrentText(type)
 
                 for i in range(self.tableWidget.columnCount()):
                     for j in range(self.tableWidget.rowCount()):

@@ -1,4 +1,4 @@
-import sys
+import sys,os
 import numpy as np
 from stl import mesh
 from HolePlateMaker import setBU32 as sbu32
