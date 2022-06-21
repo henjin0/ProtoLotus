@@ -12,8 +12,13 @@
 下記リンクからprotolotus.zipをDLし、解凍してからご使用ください。
 https://drive.google.com/file/d/1yv45yj994fWbZyLL3cdTaLUU6_mYVVMA/view?usp=sharing
 
+初回実行だとアプリの取得元不明で実行できないため、先に**システム環境設定>セキュリティとプライバシー**から設定を許可してください。
+
+<img width="600" alt="ツール実行画面" src="readmeImage/allowsetting.png">
+
+### バイナリファイル名
 ```
-mac: protolotus.appを実行
+mac: protolotus.app
 （作成予定）windows: protolotus.exe
 ```
 
