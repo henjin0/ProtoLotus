@@ -8,18 +8,31 @@
 現在はネジ止め等に有効な3 mm穴とデンマークの某有名ブロックと互換する4.8 mm穴が作成できます。
 
 # 実行方法(バイナリから)
-現状はmacOSのみ対応しています。
-下記リンクからprotolotus.zipをDLし、解凍してからご使用ください。
-https://drive.google.com/file/d/1yv45yj994fWbZyLL3cdTaLUU6_mYVVMA/view?usp=sharing
+現状だとmacOSとwindowsに対応しています。
 
-初回実行だとアプリの取得元不明で実行できないため、先に**システム環境設定>セキュリティとプライバシー**から設定を許可してください。
+### 動作確認OS
+
+```
+macOS: macOS Monterey version 12.4
+windows: windows10 home x64
+```
+
+下記リンクからprotolotus_mac.zip/protolotus_windows.zipをDL&解凍してからご使用ください。
+
+- macOS: https://drive.google.com/file/d/1yv45yj994fWbZyLL3cdTaLUU6_mYVVMA/view?usp=sharing
+
+- windows: https://drive.google.com/file/d/1V7xl3M2dNVlaRSv-9Kjr9bmF9mCM0qSJ/view?usp=sharing
+
+### macOS版の注意
+
+アプリの取得元不明で実行できないため、先に**システム環境設定>セキュリティとプライバシー**から設定を許可してください。
 
 <img width="600" alt="ツール実行画面" src="readmeImage/allowsetting.png">
 
 ### バイナリファイル名
 ```
 mac: protolotus.app
-（作成予定）windows: protolotus.exe
+windows: protolotus.exe
 ```
 
 # 実行方法(pythonから)
