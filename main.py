@@ -80,6 +80,16 @@ class app_1(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
         self.addAllShowMesh()
     
     def changeIndexMaxXScaleComboBox(self,index):
+        tempDatas = self.getTableValue()
+        tempDatas = np.array(tempDatas)
+        columnTemp,rowTemp = np.where(tempDatas != 0)
+
+        if(columnTemp.any()):
+            if(np.max(columnTemp) >= int(self.maxXScaleComboBox.currentText())):
+                QtWidgets.QMessageBox.information(self, "警告",f"指定した行数よりもモデルが大きいようです。モデルの大きさを調節して再度指定してください。")
+                self.maxXScaleComboBox.setCurrentText(f"{self.tableWidget.columnCount()}")
+                return
+
         self.deleteAllShowMesh()
         self.OPlist = []
 
@@ -99,6 +109,16 @@ class app_1(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
         
 
     def changeIndexMaxYScaleComboBox(self,index):
+        tempDatas = self.getTableValue()
+        tempDatas = np.array(tempDatas)
+        columnTemp,rowTemp = np.where(tempDatas != 0)
+
+        if(rowTemp.any()):
+            if(np.max(rowTemp)) >= int(self.maxYScaleComboBox.currentText()):
+                QtWidgets.QMessageBox.information(self, "警告",f"指定した列数よりもモデルが大きいようです。モデルの大きさを調節して再度指定してください。")
+                self.maxYScaleComboBox.setCurrentText(f"{self.tableWidget.rowCount()}")
+                return
+            
         self.deleteAllShowMesh()
         self.OPlist = []
 
@@ -107,7 +127,6 @@ class app_1(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
         
         datas = self.getTableValue()
         datas = np.array(datas)
-
         column,row = np.where(datas != 0)
 
         for i in range(len(column)):
