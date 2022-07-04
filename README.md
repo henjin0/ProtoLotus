@@ -61,7 +61,17 @@ python main.py
 ```
 
 # バイナリのビルド方法
-上記の実行方法(pythonから)を実施したあとに下記コマンドを実行してください。
+事前に上記の実行方法(pythonから)を実施してください。
+
+本プログラムでは.uiファイルは直接使っておらず、.pyファイルへ変換する必要があります。
+画面を作成した場合は下記コマンドを参考に.uiファイルを.pyファイルを変換してください。
+（venv環境を適用していればコマンドが使用できる。）
+
+```shell:make_ui
+pyuic6 ui_files/MainWindow.ui -o MainWindow.py
+```
+
+最後に下記コマンドを実行することでdistフォルダにバイナリファイル(main.app or main.exe)を作成することができます。
 
 ```shell:build
 pyinstaller main.spec  
