@@ -52,9 +52,14 @@ class app_1(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
         axis.setSpacing(x=1,y=1,z=1)
         self.openGLWidget.addItem(axis)
 
-        self.holePatternCombobox.addItems(['3mm', '4.8mm'])
         self.holePatternCombobox.setCurrentIndex(0)
-        self.holePatternCombobox.currentIndexChanged.connect(self.changeIndex)
+        self.holePatternCombobox.currentIndexChanged.connect(self.changeIndexHolePatternCombobox)
+
+        self.maxXScaleComboBox.setCurrentIndex(0)
+        self.maxXScaleComboBox.currentIndexChanged.connect(self.changeIndexMaxXScaleComboBox)
+
+        self.maxYScaleComboBox.setCurrentIndex(0)
+        self.maxYScaleComboBox.currentIndexChanged.connect(self.changeIndexMaxYScaleComboBox)
 
         self.OPlist = []
 
@@ -69,17 +74,55 @@ class app_1(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
             curMesh.save(filepath[0])
             QtWidgets.QMessageBox.information(self, "file",f"STLファイルの出力が完了しました。\n出力先:{filepath[0]}")
 
-    def changeIndex(self,index):
+    def changeIndexHolePatternCombobox(self,index):
         self.deleteAllShowMesh()
         self.changeAllOPType(self.holePatternCombobox.currentText())
         self.addAllShowMesh()
+    
+    def changeIndexMaxXScaleComboBox(self,index):
+        self.deleteAllShowMesh()
+        self.OPlist = []
+
+        self.tableWidget.setColumnCount(int(self.maxXScaleComboBox.currentText()))
+        self.initTableValue()
+        
+        datas = self.getTableValue()
+        datas = np.array(datas)
+
+        column,row = np.where(datas != 0)
+
+        for i in range(len(column)):
+                addData, self.OPlist = NumpyArrayToHolePlate.GLViewDataPush(datas,\
+                    self.holePatternCombobox.currentText(),\
+                    self.colorlist2,self.OPlist,row[i],column[i])
+                self.addShowMesh(addData.glMesh)
+        
+
+    def changeIndexMaxYScaleComboBox(self,index):
+        self.deleteAllShowMesh()
+        self.OPlist = []
+
+        self.tableWidget.setRowCount(int(self.maxYScaleComboBox.currentText()))
+        self.initTableValue()
+        
+        datas = self.getTableValue()
+        datas = np.array(datas)
+
+        column,row = np.where(datas != 0)
+
+        for i in range(len(column)):
+                addData, self.OPlist = NumpyArrayToHolePlate.GLViewDataPush(datas,\
+                    self.holePatternCombobox.currentText(),\
+                    self.colorlist2,self.OPlist,row[i],column[i])
+                self.addShowMesh(addData.glMesh)
 
     def initTableValue(self):
         for i in range(self.tableWidget.columnCount()):
             for j in range(self.tableWidget.rowCount()):
-                self.tableWidget.setItem(j,i,QtWidgets.QTableWidgetItem("0"))
-                self.tableWidget.item(j,i).setBackground(\
-                    self.colorlist[0])
+                if not (self.tableWidget.item(j,i)):
+                    self.tableWidget.setItem(j,i,QtWidgets.QTableWidgetItem("0"))
+                    self.tableWidget.item(j,i).setBackground(\
+                        self.colorlist[0])
 
     def setTableValue(self,data):
         for i in range(self.tableWidget.columnCount()):
@@ -157,10 +200,18 @@ class app_1(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
         filepath = QtWidgets.QFileDialog.getSaveFileName(self, 'Save File',"~/.", ("json file (*.json)"))
         if filepath[0] != "":
             datas = self.getTableValue()
-            type = self.holePatternCombobox.currentText()
+            holePatternComboboxValue = self.holePatternCombobox.currentText()
+            maxXScaleComboBoxValue = self.maxXScaleComboBox.currentText()
+            maxYScaleComboBoxValue = self.maxYScaleComboBox.currentText()
 
             with open(filepath[0], 'w') as outfile:
-                json.dump({'datas':datas,'type':type},outfile)
+                dumpData = {\
+                    'datas': datas,\
+                    'holePatternComboboxValue': holePatternComboboxValue,\
+                    'maxXScaleComboBoxValue': maxXScaleComboBoxValue,\
+                    'maxYScaleComboBoxValue': maxYScaleComboBoxValue\
+                    }
+                json.dump(dumpData,outfile)
                 QtWidgets.QMessageBox.information(self, "file",f"設定ファイルの出力が完了しました。\n出力先:{filepath[0]}")
 
 
@@ -176,18 +227,29 @@ class app_1(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
                 json_data = json.load(json_file)
                 datas = json_data['datas']
                 datas = np.array(datas)
-                type = json_data['type']
+                holePatternComboboxValue = json_data['holePatternComboboxValue']
+                maxXScaleComboBoxValue = json_data['maxXScaleComboBoxValue']
+                maxYScaleComboBoxValue = json_data['maxYScaleComboBoxValue']
+
+                self.maxXScaleComboBox.setCurrentText(maxXScaleComboBoxValue)
+                self.maxYScaleComboBox.setCurrentText(maxYScaleComboBoxValue)
+                self.tableWidget.setColumnCount(int(self.maxXScaleComboBox.currentText()))
+                self.tableWidget.setRowCount(int(self.maxYScaleComboBox.currentText()))
+
 
                 self.setTableValue(datas.T)
-                self.holePatternCombobox.setCurrentText(type)
+                self.holePatternCombobox.setCurrentText(holePatternComboboxValue)
+                
+                datas = self.getTableValue()
+                datas = np.array(datas)
 
-                for i in range(self.tableWidget.columnCount()):
-                    for j in range(self.tableWidget.rowCount()):
-                        if datas[i][j] != 0:
-                            addData, self.OPlist = NumpyArrayToHolePlate.GLViewDataPush(datas,\
-                                self.holePatternCombobox.currentText(),\
-                                self.colorlist2,self.OPlist,j,i)
-                            self.addShowMesh(addData.glMesh)
+                column,row = np.where(datas != 0)
+
+                for i in range(len(column)):
+                        addData, self.OPlist = NumpyArrayToHolePlate.GLViewDataPush(datas,\
+                            self.holePatternCombobox.currentText(),\
+                            self.colorlist2,self.OPlist,row[i],column[i])
+                        self.addShowMesh(addData.glMesh)
 
     def deleteShowMesh(self,deleteData):
         self.openGLWidget.removeItem(deleteData)
