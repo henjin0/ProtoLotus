@@ -218,14 +218,14 @@ class app_1(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
 
         filepath = QtWidgets.QFileDialog.getSaveFileName(self, 'Save File',"~/.", ("json file (*.json)"))
         if filepath[0] != "":
-            datas = self.getTableValue()
+            tableWidgetDatas = self.getTableValue()
             holePatternComboboxValue = self.holePatternCombobox.currentText()
             maxXScaleComboBoxValue = self.maxXScaleComboBox.currentText()
             maxYScaleComboBoxValue = self.maxYScaleComboBox.currentText()
 
             with open(filepath[0], 'w') as outfile:
                 dumpData = {\
-                    'datas': datas,\
+                    'tableWidgetDatas': tableWidgetDatas,\
                     'holePatternComboboxValue': holePatternComboboxValue,\
                     'maxXScaleComboBoxValue': maxXScaleComboBoxValue,\
                     'maxYScaleComboBoxValue': maxYScaleComboBoxValue\
@@ -244,11 +244,22 @@ class app_1(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
                 self.OPlist.clear()
 
                 json_data = json.load(json_file)
-                datas = json_data['datas']
-                datas = np.array(datas)
-                holePatternComboboxValue = json_data['holePatternComboboxValue']
-                maxXScaleComboBoxValue = json_data['maxXScaleComboBoxValue']
-                maxYScaleComboBoxValue = json_data['maxYScaleComboBoxValue']
+
+                # 旧フォーマット
+                if "type" in json_data:
+                    tableWidgetDatas = json_data['datas']
+                    tableWidgetDatas = np.array(tableWidgetDatas)
+                    holePatternComboboxValue = json_data['type']
+                    maxXScaleComboBoxValue = "10"
+                    maxYScaleComboBoxValue = "10"
+
+                # 現行フォーマット
+                else:
+                    tableWidgetDatas = json_data['tableWidgetDatas']
+                    tableWidgetDatas = np.array(tableWidgetDatas)
+                    holePatternComboboxValue = json_data['holePatternComboboxValue']
+                    maxXScaleComboBoxValue = json_data['maxXScaleComboBoxValue']
+                    maxYScaleComboBoxValue = json_data['maxYScaleComboBoxValue']
 
                 self.maxXScaleComboBox.setCurrentText(maxXScaleComboBoxValue)
                 self.maxYScaleComboBox.setCurrentText(maxYScaleComboBoxValue)
@@ -256,7 +267,7 @@ class app_1(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
                 self.tableWidget.setRowCount(int(self.maxYScaleComboBox.currentText()))
 
 
-                self.setTableValue(datas.T)
+                self.setTableValue(tableWidgetDatas.T)
                 self.holePatternCombobox.setCurrentText(holePatternComboboxValue)
                 
                 datas = self.getTableValue()
