@@ -45,7 +45,7 @@ class app_1(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
         self.pushButton.clicked.connect(self.on_push_b1)
         self.tableWidget.cellClicked.connect(self.on_clickcell)
         self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.EditTrigger.NoEditTriggers)
-        
+
         self.initMenuAndToolbar()
 
         self.initTableValue()
