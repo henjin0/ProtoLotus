@@ -17,6 +17,8 @@ macOS: macOS Monterey version 12.4
 windows: windows10 home x64
 ```
 
+### 配布リンク
+
 下記リンクからprotolotus_mac_\[version\].zip/protolotus_windows_\[version\].zipをDL&解凍してからご使用ください。
 
 - windows最新版: https://drive.google.com/file/d/10zAh4nTghjGT4FxIDg8ONtWKa12NBLk6/view?usp=sharing
@@ -82,7 +84,7 @@ pyinstaller main.spec
 ```
 
 # 操作方法
-<img width="600" alt="ツール実行画面" src="readmeImage/tutorial.png">
+<img width="800" alt="ツール実行画面" src="readmeImage/tutorial.png">
 
 
 # LICENSE
