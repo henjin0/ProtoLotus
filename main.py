@@ -15,13 +15,14 @@ def resourcePath(filename):
   return os.path.join(filename)
 
 class app_1(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
+
     def __init__(self):
 
         self.colorlist = [QtGui.QColor(70,70,70),\
                 QtGui.QColor(96,240,168),\
                 QtGui.QColor(240,168,96),\
-                QtGui.QColor(240,96,96),\
                 QtGui.QColor(168,96,240),\
+                QtGui.QColor(240,96,96),\
                 QtGui.QColor(96,240,240),\
                 QtGui.QColor(240,240,96),\
                 QtGui.QColor(96,96,240),\
@@ -30,8 +31,8 @@ class app_1(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
         self.colorlist2 = [(255/255,255/255,255/255,1),\
                 (96/(255*1.5),240/(255*1.5),168/(255*1.5),1),\
                 (240/(255*1.5),168/(255*1.5),96/(255*1.5),1),\
-                (240/(255*1.5),96/(255*1.5),96/(255*1.5),1),\
                 (168/(255*1.5),96/(255*1.5),240/(255*1.5),1),\
+                (240/(255*1.5),96/(255*1.5),96/(255*1.5),1),\
                 (96/(255*1.5),240/(255*1.5),240/(255*1.5),1),\
                 (240/(255*1.5),240/(255*1.5),96/(255*1.5),1),\
                 (96/(255*1.5),96/(255*1.5),240/(255*1.5),1),\
@@ -43,8 +44,8 @@ class app_1(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
         self.setWindowTitle("ProtoLotus")
         self.pushButton.clicked.connect(self.on_push_b1)
         self.tableWidget.cellClicked.connect(self.on_clickcell)
-        self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.EditTrigger.NoEditTriggers)        
-
+        self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.EditTrigger.NoEditTriggers)
+        
         self.initMenuAndToolbar()
 
         self.initTableValue()
@@ -130,10 +131,10 @@ class app_1(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
         column,row = np.where(datas != 0)
 
         for i in range(len(column)):
-                addData, self.OPlist = NumpyArrayToHolePlate.GLViewDataPush(datas,\
-                    self.holePatternCombobox.currentText(),\
-                    self.colorlist2,self.OPlist,row[i],column[i])
-                self.addShowMesh(addData.glMesh)
+            addData, self.OPlist = NumpyArrayToHolePlate.GLViewDataPush(datas,\
+                self.holePatternCombobox.currentText(),\
+                self.colorlist2,self.OPlist,row[i],column[i])
+            self.addShowMesh(addData.glMesh)
 
     def initTableValue(self):
         for i in range(self.tableWidget.columnCount()):
@@ -162,7 +163,7 @@ class app_1(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
     def on_clickcell(self,row,column):
         if self.tableWidget.item(row,column):
 
-            if int(self.tableWidget.item(row,column).text(),10) >= 2:
+            if int(self.tableWidget.item(row,column).text(),10) >= 3:
                 newItem = QtWidgets.QTableWidgetItem("0")
             else:
                 newItem = QtWidgets.QTableWidgetItem(f"{int(self.tableWidget.item(row,column).text(),10) + 1}")
@@ -178,12 +179,14 @@ class app_1(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
         datas = self.getTableValue()
         datas = np.array(datas)
 
+         # note: 1になった瞬間＝数字のローテーション始まってモデルを新しく追加するとき。
         if int(self.tableWidget.item(row,column).text(),10)==1:
             addData, self.OPlist = NumpyArrayToHolePlate.GLViewDataPush(datas,\
                 self.holePatternCombobox.currentText(),\
                 self.colorlist2,self.OPlist,row,column)
             self.addShowMesh(addData.glMesh)
 
+        # note: 0になった瞬間＝数字のローテーションが一周してモデルを消さなくてはいけなくなったとき。
         elif int(self.tableWidget.item(row,column).text(),10)==0:
             deleteData,self.OPlist = NumpyArrayToHolePlate.GLViewDataPop(datas,\
                 self.holePatternCombobox.currentText(),\
@@ -196,6 +199,8 @@ class app_1(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
                 self.colorlist2,self.OPlist,row,column)
             self.deleteShowMesh(beforeData.glMesh)
             self.addShowMesh(afterData.glMesh)
+        
+        self.tableWidget.clearSelection()
 
     def initMenuAndToolbar(self):
         fileOpenAction = QtGui.QAction(QtGui.QIcon(resourcePath('icon/folderopen.png')), 'Open', self)
@@ -212,10 +217,88 @@ class app_1(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
         self.toolbar = self.addToolBar('Save')
         self.toolbar.addAction(fileSaveAction)
 
-    def saveSettingFile(self):
-        datas = self.getTableValue()
-        type = self.holePatternCombobox.currentText()
+        button0Action = QtGui.QAction(QtGui.QIcon(resourcePath('icon/0.png')), 'fill 0 for all selected cells', self)
+        button0Action.setShortcut('Ctrl+0')
+        button1Action = QtGui.QAction(QtGui.QIcon(resourcePath('icon/1.png')), 'fill 1 for all selected cells', self)
+        button1Action.setShortcut('Ctrl+1')
+        button2Action = QtGui.QAction(QtGui.QIcon(resourcePath('icon/2.png')), 'fill 2 for all selected cells', self)
+        button2Action.setShortcut('Ctrl+2')
+        button3Action = QtGui.QAction(QtGui.QIcon(resourcePath('icon/3.png')), 'fill 3 for all selected cells', self)
+        button3Action.setShortcut('Ctrl+3')
 
+        apply0ModelAction = lambda :self.applyModelAction(0)
+        button0Action.triggered.connect(apply0ModelAction)
+        self.menufiles.addAction(button0Action)
+        self.toolbar = self.addToolBar('fill 0 for all selected cells')
+        self.toolbar.addAction(button0Action)
+
+        apply1ModelAction = lambda :self.applyModelAction(1)
+        button1Action.triggered.connect(apply1ModelAction)
+        self.menufiles.addAction(button1Action)
+        self.toolbar = self.addToolBar('fill 1 for all selected cells')
+        self.toolbar.addAction(button1Action)
+
+        apply2ModelAction = lambda :self.applyModelAction(2)
+        button2Action.triggered.connect(apply2ModelAction)
+        self.menufiles.addAction(button2Action)
+        self.toolbar = self.addToolBar('fill 2 for all selected cells')
+        self.toolbar.addAction(button2Action)
+
+        apply3ModelAction = lambda :self.applyModelAction(3)
+        button3Action.triggered.connect(apply3ModelAction)
+        self.menufiles.addAction(button3Action)
+        self.toolbar = self.addToolBar('fill 3 for all selected cells')
+        self.toolbar.addAction(button3Action)
+
+    def applyModelAction(self,cellNumber):
+        items = self.tableWidget.selectedItems()
+        
+        if(items==[]):
+            return
+
+        temp_tableWidgetDatas = self.getTableValue()
+        temp_tableWidgetDatas = np.array(temp_tableWidgetDatas)
+
+        row = []
+        column = []
+        tempData = []
+        for item in sorted(items):
+            row.append(item.row())
+            column.append(item.column())
+            tempData.append(int(item.text(),10))
+            setItem = QtWidgets.QTableWidgetItem(f"{cellNumber}")
+            setItem.setBackground(self.colorlist[cellNumber])
+            self.tableWidget.setItem(item.row(),item.column(),setItem)
+        
+        tableWidgetDatas = self.getTableValue()
+        tableWidgetDatas = np.array(tableWidgetDatas)
+
+        self.tableWidget.clearSelection()
+
+        if(cellNumber == 0):
+            for i in range(len(row)):
+                if(tempData[i] != 0):
+                    deleteData,self.OPlist = NumpyArrayToHolePlate.GLViewDataPop(tableWidgetDatas,\
+                        self.holePatternCombobox.currentText(),\
+                        self.colorlist2,self.OPlist,row[i],column[i])
+                    self.deleteShowMesh(deleteData.glMesh)
+            
+            return
+                
+        for i in range(len(row)):
+            if(tempData[i]==0):
+                addData, self.OPlist = NumpyArrayToHolePlate.GLViewDataPush(tableWidgetDatas,\
+                    self.holePatternCombobox.currentText(),\
+                    self.colorlist2,self.OPlist, row[i], column[i])
+                self.addShowMesh(addData.glMesh)
+            else:
+                afterData,beforeData,self.OPlist = NumpyArrayToHolePlate.GLViewDataChange(tableWidgetDatas,\
+                self.holePatternCombobox.currentText(),\
+                self.colorlist2,self.OPlist, row[i], column[i])
+                self.deleteShowMesh(beforeData.glMesh)
+                self.addShowMesh(afterData.glMesh)
+
+    def saveSettingFile(self):
         filepath = QtWidgets.QFileDialog.getSaveFileName(self, 'Save File',"~/.", ("json file (*.json)"))
         if filepath[0] != "":
             tableWidgetDatas = self.getTableValue()
@@ -276,10 +359,10 @@ class app_1(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
                 column,row = np.where(datas != 0)
 
                 for i in range(len(column)):
-                        addData, self.OPlist = NumpyArrayToHolePlate.GLViewDataPush(datas,\
-                            self.holePatternCombobox.currentText(),\
-                            self.colorlist2,self.OPlist,row[i],column[i])
-                        self.addShowMesh(addData.glMesh)
+                    addData, self.OPlist = NumpyArrayToHolePlate.GLViewDataPush(datas,\
+                        self.holePatternCombobox.currentText(),\
+                        self.colorlist2,self.OPlist,row[i],column[i])
+                    self.addShowMesh(addData.glMesh)
 
     def deleteShowMesh(self,deleteData):
         self.openGLWidget.removeItem(deleteData)

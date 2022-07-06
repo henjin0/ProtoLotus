@@ -1,10 +1,8 @@
 import sys,os
 import numpy as np
 from stl import mesh
-from HolePlateMaker import setBU32 as sbu32
-from HolePlateMaker import setNU32 as snu32
-from HolePlateMaker import setBU48 as sbu48
-from HolePlateMaker import setABU48 as sabu48
+from HolePlateMaker import set32 as s32
+from HolePlateMaker import set48 as s48
 from HolePlateMaker import addBlock as ab
 
 import pyqtgraph.opengl as gl
@@ -56,18 +54,22 @@ class OP:
         if(self.value>0):
             if(type=='3mm'):
                 if(self.value==1):
-                    newMesh = sbu32.setBU32(self.row,self.column,0)
+                    newMesh = s32.set32(self.row,self.column,0,'HolePlateMaker/BU3.2mm.stl')
                 elif(self.value==2):
-                    newMesh = snu32.setNU32(self.row,self.column,0)
+                    newMesh = s32.set32(self.row,self.column,0,'HolePlateMaker/ABU3.2mm.stl')
+                elif(self.value==3):
+                    newMesh = s32.set32(self.row,self.column,0,'HolePlateMaker/NU3.2mm.stl')
                 else:
-                    sys.exit('Type \'3mm\' only support 0,1,2.')
+                    sys.exit('Type \'3mm\' only support 0,1,2,3.')
                 newMesh.translate(np.array([OFFSET[0][0],OFFSET[0][1],0]))
 
             elif(type=='4.8mm'):
                 if(self.value==1):
-                    newMesh = sbu48.setBU48(self.row,self.column,0)                
+                    newMesh = s48.set48(self.row,self.column,0,'HolePlateMaker/BU4.8mm.stl')                
                 elif(self.value==2):
-                    newMesh = sabu48.setABU48(self.row,self.column,0)
+                    newMesh = s48.set48(self.row,self.column,0,'HolePlateMaker/ABU4.8mm.stl')
+                elif(self.value==3):
+                    newMesh = s48.set48(self.row,self.column,0,'HolePlateMaker/NU4.8mm.stl')
                 else:
                     sys.exit('Type \'4.8mm\' only support 0,1,2.')
                 newMesh.translate(np.array([OFFSET[1][0],OFFSET[1][1],0]))
@@ -133,19 +135,23 @@ def NumpyArrayToPlate(plateData,type):
             if(plateData[i][j]>0):
                 if(type=='3mm'):
                     if(plateData[i][j]==1):
-                        newMesh = sbu32.setBU32(i,j,0)
+                        newMesh = s32.set32(i,j,0,'HolePlateMaker/BU3.2mm.stl')
                     elif(plateData[i][j]==2):
-                        newMesh = snu32.setNU32(i,j,0)
+                        newMesh = s32.set32(i,j,0,'HolePlateMaker/ABU3.2mm.stl')
+                    elif(plateData[i][j]==3):
+                        newMesh = s32.set32(i,j,0,'HolePlateMaker/NU3.2mm.stl')
                     else:
-                        sys.exit('Type \'3mm\' only support 0,1,2.')
+                        sys.exit('Type \'3mm\' only support 0,1,2,3.')
                     
                 elif(type=='4.8mm'):
                     if(plateData[i][j]==1):
-                        newMesh = sbu48.setBU48(i,j,0)
+                        newMesh = s48.set48(i,j,0,'HolePlateMaker/BU4.8mm.stl')
                     elif(plateData[i][j]==2):
-                        newMesh = sabu48.setABU48(i,j,0)
+                        newMesh = s48.set48(i,j,0,'HolePlateMaker/ABU4.8mm.stl')
+                    elif(plateData[i][j]==3):
+                        newMesh = s48.set48(i,j,0,'HolePlateMaker/NU4.8mm.stl')
                     else:
-                        sys.exit('Type \'4.8mm\' only support 0,1,2.')
+                        sys.exit('Type \'4.8mm\' only support 0,1,2,3.')
 
                 
                 curMesh = ab.addBlock(curMesh, newMesh)
