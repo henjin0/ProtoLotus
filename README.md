@@ -19,9 +19,13 @@ windows: windows10 home x64
 
 下記リンクからprotolotus_mac_\[version\].zip/protolotus_windows_\[version\].zipをDL&解凍してからご使用ください。
 
-- macOS: https://drive.google.com/drive/folders/12MCWW9YqUyiiJXNIK2_rq5YSsvzvNvHh?usp=sharing
+- windows最新版: https://drive.google.com/file/d/10zAh4nTghjGT4FxIDg8ONtWKa12NBLk6/view?usp=sharing
 
-- windows: https://drive.google.com/drive/folders/1lRnMViTJTnGBnZArAat9tUMsmL3bNGBV?usp=sharing
+- macOS最新版: https://drive.google.com/file/d/1w7n3oDE-fYzG9udwpprcTW0oIGziCx56/view?usp=sharing
+
+- windows他バージョン: https://drive.google.com/drive/folders/1lRnMViTJTnGBnZArAat9tUMsmL3bNGBV?usp=sharing
+
+- macOS他バージョン: https://drive.google.com/drive/folders/12MCWW9YqUyiiJXNIK2_rq5YSsvzvNvHh?usp=sharing
 
 ### macOS版の注意
 
