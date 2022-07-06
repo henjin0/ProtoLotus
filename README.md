@@ -17,11 +17,11 @@ macOS: macOS Monterey version 12.4
 windows: windows10 home x64
 ```
 
-下記リンクからprotolotus_mac.zip/protolotus_windows.zipをDL&解凍してからご使用ください。
+下記リンクからprotolotus_mac_\[version\].zip/protolotus_windows_\[version\].zipをDL&解凍してからご使用ください。
 
-- macOS: https://drive.google.com/file/d/1yv45yj994fWbZyLL3cdTaLUU6_mYVVMA/view?usp=sharing
+- macOS: https://drive.google.com/drive/folders/12MCWW9YqUyiiJXNIK2_rq5YSsvzvNvHh?usp=sharing
 
-- windows: https://drive.google.com/file/d/1V7xl3M2dNVlaRSv-9Kjr9bmF9mCM0qSJ/view?usp=sharing
+- windows: https://drive.google.com/drive/folders/1lRnMViTJTnGBnZArAat9tUMsmL3bNGBV?usp=sharing
 
 ### macOS版の注意
 
