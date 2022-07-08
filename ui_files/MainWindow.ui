@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>841</width>
+    <width>977</width>
     <height>600</height>
    </rect>
   </property>
@@ -14,362 +14,356 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="GLViewWidget" name="openGLWidget">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>40</y>
-      <width>531</width>
-      <height>381</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButton">
-    <property name="geometry">
-     <rect>
-      <x>250</x>
-      <y>470</y>
-      <width>151</width>
-      <height>32</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Output STL file</string>
-    </property>
-   </widget>
-   <widget class="QComboBox" name="holePatternCombobox">
-    <property name="geometry">
-     <rect>
-      <x>570</x>
-      <y>50</y>
-      <width>104</width>
-      <height>26</height>
-     </rect>
-    </property>
+   <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="5,5">
     <item>
-     <property name="text">
-      <string>3mm</string>
-     </property>
+     <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0">
+      <property name="sizeConstraint">
+       <enum>QLayout::SetDefaultConstraint</enum>
+      </property>
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="GLViewWidget" name="openGLWidget">
+        <property name="maximumSize">
+         <size>
+          <width>460</width>
+          <height>16777215</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton">
+        <property name="maximumSize">
+         <size>
+          <width>472</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Output STL file</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </item>
     <item>
-     <property name="text">
-      <string>4.8mm</string>
-     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_7">
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>hole pattern</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="holePatternCombobox">
+          <item>
+           <property name="text">
+            <string>3mm</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>4.8mm</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_3">
+            <item>
+             <widget class="QLabel" name="label_2">
+              <property name="text">
+               <string>max x scale</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBox" name="maxXScaleComboBox">
+              <item>
+               <property name="text">
+                <string>10</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>15</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>20</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>25</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>30</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>35</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>40</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>45</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>50</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>55</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>60</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>65</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>70</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>75</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>80</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>85</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>90</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>95</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>100</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_4">
+            <item>
+             <widget class="QLabel" name="label_3">
+              <property name="text">
+               <string>max y scale</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBox" name="maxYScaleComboBox">
+              <item>
+               <property name="text">
+                <string>10</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>15</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>20</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>25</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>30</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>35</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>40</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>45</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>50</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>55</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>60</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>65</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>70</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>75</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>80</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>85</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>90</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>95</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>100</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_4">
+          <item>
+           <widget class="QTableWidget" name="tableWidget">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+              <strikeout>false</strikeout>
+             </font>
+            </property>
+            <property name="rowCount">
+             <number>10</number>
+            </property>
+            <property name="columnCount">
+             <number>10</number>
+            </property>
+            <attribute name="horizontalHeaderDefaultSectionSize">
+             <number>20</number>
+            </attribute>
+            <attribute name="horizontalHeaderMinimumSectionSize">
+             <number>19</number>
+            </attribute>
+            <row/>
+            <row/>
+            <row/>
+            <row/>
+            <row/>
+            <row/>
+            <row/>
+            <row/>
+            <row/>
+            <row/>
+            <column/>
+            <column/>
+            <column/>
+            <column/>
+            <column/>
+            <column/>
+            <column/>
+            <column/>
+            <column/>
+            <column/>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </item>
+     </layout>
     </item>
-   </widget>
-   <widget class="QLabel" name="label">
-    <property name="geometry">
-     <rect>
-      <x>580</x>
-      <y>30</y>
-      <width>81</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>hole pattern</string>
-    </property>
-   </widget>
-   <widget class="QTableWidget" name="tableWidget">
-    <property name="enabled">
-     <bool>true</bool>
-    </property>
-    <property name="geometry">
-     <rect>
-      <x>560</x>
-      <y>180</y>
-      <width>256</width>
-      <height>192</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>10</pointsize>
-      <strikeout>false</strikeout>
-     </font>
-    </property>
-    <property name="rowCount">
-     <number>10</number>
-    </property>
-    <property name="columnCount">
-     <number>10</number>
-    </property>
-    <attribute name="horizontalHeaderDefaultSectionSize">
-     <number>20</number>
-    </attribute>
-    <attribute name="horizontalHeaderMinimumSectionSize">
-     <number>19</number>
-    </attribute>
-    <row/>
-    <row/>
-    <row/>
-    <row/>
-    <row/>
-    <row/>
-    <row/>
-    <row/>
-    <row/>
-    <row/>
-    <column/>
-    <column/>
-    <column/>
-    <column/>
-    <column/>
-    <column/>
-    <column/>
-    <column/>
-    <column/>
-    <column/>
-   </widget>
-   <widget class="QLabel" name="label_2">
-    <property name="geometry">
-     <rect>
-      <x>580</x>
-      <y>90</y>
-      <width>81</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>max x scale</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_3">
-    <property name="geometry">
-     <rect>
-      <x>700</x>
-      <y>90</y>
-      <width>81</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>max y scale</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
-   <widget class="QComboBox" name="maxXScaleComboBox">
-    <property name="geometry">
-     <rect>
-      <x>570</x>
-      <y>110</y>
-      <width>104</width>
-      <height>26</height>
-     </rect>
-    </property>
-    <item>
-     <property name="text">
-      <string>10</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>15</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>20</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>25</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>30</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>35</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>40</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>45</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>50</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>55</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>60</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>65</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>70</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>75</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>80</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>85</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>90</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>95</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>100</string>
-     </property>
-    </item>
-   </widget>
-   <widget class="QComboBox" name="maxYScaleComboBox">
-    <property name="geometry">
-     <rect>
-      <x>690</x>
-      <y>110</y>
-      <width>104</width>
-      <height>26</height>
-     </rect>
-    </property>
-    <item>
-     <property name="text">
-      <string>10</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>15</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>20</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>25</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>30</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>35</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>40</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>45</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>50</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>55</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>60</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>65</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>70</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>75</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>80</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>85</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>90</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>95</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>100</string>
-     </property>
-    </item>
-   </widget>
+   </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>841</width>
+     <width>977</width>
      <height>24</height>
     </rect>
    </property>
@@ -377,9 +371,6 @@
     <property name="title">
      <string>files</string>
     </property>
-    <addaction name="actionsave"/>
-    <addaction name="actionload"/>
-    <addaction name="actionexit"/>
    </widget>
    <addaction name="menufiles"/>
   </widget>

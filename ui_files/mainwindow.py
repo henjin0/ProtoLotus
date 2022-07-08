@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file 'ui_files/MainWindow2.ui'
+# Form implementation generated from reading ui file 'ui_files/MainWindow.ui'
 #
 # Created by: PyQt6 UI code generator 6.3.0
 #
@@ -138,9 +138,6 @@ class Ui_MainWindow(object):
         self.actionload.setObjectName("actionload")
         self.actionexit = QtGui.QAction(MainWindow)
         self.actionexit.setObjectName("actionexit")
-        self.menufiles.addAction(self.actionsave)
-        self.menufiles.addAction(self.actionload)
-        self.menufiles.addAction(self.actionexit)
         self.menubar.addAction(self.menufiles.menuAction())
 
         self.retranslateUi(MainWindow)

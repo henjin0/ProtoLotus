@@ -74,7 +74,7 @@ python main.py
 （venv環境を適用していればコマンドが使用できる。）
 
 ```shell:make_ui
-pyuic6 ui_files/MainWindow.ui -o MainWindow.py
+pyuic6 ui_files/MainWindow.ui -o ui_files/MainWindow.py
 ```
 
 最後に下記コマンドを実行することでdistフォルダにバイナリファイル(main.app or main.exe)を作成することができます。
