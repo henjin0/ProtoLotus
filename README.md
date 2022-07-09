@@ -23,7 +23,7 @@ windows: windows10 home x64
 
 - windows最新版: https://drive.google.com/file/d/10zAh4nTghjGT4FxIDg8ONtWKa12NBLk6/view?usp=sharing
 
-- macOS最新版: https://drive.google.com/file/d/1w7n3oDE-fYzG9udwpprcTW0oIGziCx56/view?usp=sharing
+- macOS最新版: https://drive.google.com/file/d/1iVJRgImbKgN98qsUjpX14bu1paauTqkX/view?usp=sharing
 
 - windows他バージョン: https://drive.google.com/drive/folders/1lRnMViTJTnGBnZArAat9tUMsmL3bNGBV?usp=sharing
 
