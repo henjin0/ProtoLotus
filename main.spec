@@ -47,6 +47,6 @@ exe = EXE(
 app = BUNDLE(
     exe,
     name='main.app',
-    icon=None,
+    icon='icon/protolotus.png',
     bundle_identifier=None,
 )

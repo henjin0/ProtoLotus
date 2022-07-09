@@ -42,6 +42,7 @@ class app_1(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
         super(app_1,self).__init__()
         self.setupUi(self)
         self.setWindowTitle("ProtoLotus")
+        self.setWindowIcon(QtGui.QIcon(resourcePath('icon/protolotus.png')))
         self.pushButton.clicked.connect(self.on_push_b1)
         self.tableWidget.cellClicked.connect(self.on_clickcell)
         self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.EditTrigger.NoEditTriggers)
@@ -203,6 +204,12 @@ class app_1(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
         self.tableWidget.clearSelection()
 
     def initMenuAndToolbar(self):
+        
+        
+        licenseOpenAction = QtGui.QAction(QtGui.QIcon(resourcePath('icon/protolotus.png')),'about protolotus...',self)
+        licenseOpenAction.triggered.connect(self.licenseOpenAction)
+        self.menuProtolotus.addAction(licenseOpenAction)
+        
         fileOpenAction = QtGui.QAction(QtGui.QIcon(resourcePath('icon/folderopen.png')), 'Open', self)
         fileOpenAction.setShortcut('Ctrl+O')
         fileOpenAction.triggered.connect(self.openSettingFile)
@@ -249,6 +256,37 @@ class app_1(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
         self.menufiles.addAction(button3Action)
         self.toolbar = self.addToolBar('fill 3 for all selected cells')
         self.toolbar.addAction(button3Action)
+
+    def licenseOpenAction(self):
+        msgBox = QtWidgets.QMessageBox()
+        msgBox.setWindowTitle("About protolotus")
+        msgBox.setText(f"Protolotus ver.0.1.1\n© Inoue Minoru 2022\nProtoLotus is licensed under the GNU General Public License v3.0")
+        msgBox.setIcon(QtWidgets.QMessageBox.Icon.Information)
+        msgBox.setWindowIcon(QtGui.QIcon(resourcePath('icon/protolotus.png')))
+        msgBox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Yes)
+        msgBox.setDetailedText("modules:{\n\
+            altgraph==0.17.2\n\
+            autopep8==1.6.0\n\
+            macholib==1.16\n\
+            numpy==1.22.4\n\
+            numpy-stl==2.17.1\n\
+            packaging==21.3\n\
+            ply==3.11\n\
+            pycodestyle==2.8.0\n\
+            pyinstaller==5.1\n\
+            pyinstaller-hooks-contrib==2022.7\n\
+            PyOpenGL==3.1.6\n\
+            pyparsing==3.0.9\n\
+            PyQt6==6.3.0\n\
+            PyQt6-Qt6==6.3.0\n\
+            PyQt6-sip==13.3.1\n\
+            pyqtgraph==0.12.4\n\
+            python-utils==3.3.3\n\
+            sip==6.6.1\n\
+            toml==0.10.2\n\
+            }")
+        msgBox.exec()
+
 
     def applyModelAction(self,cellNumber):
         items = self.tableWidget.selectedItems()

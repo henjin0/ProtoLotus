@@ -372,7 +372,13 @@
      <string>files</string>
     </property>
    </widget>
+   <widget class="QMenu" name="menuProtolotus">
+    <property name="title">
+     <string>Protolotus</string>
+    </property>
+   </widget>
    <addaction name="menufiles"/>
+   <addaction name="menuProtolotus"/>
   </widget>
   <widget class="QToolBar" name="toolBar">
    <property name="windowTitle">
