@@ -51,27 +51,29 @@ class OP:
         OFFSET = [[-round(5*self.columnMax/2),-round(5*self.rowMax/2)],\
         [-round(7.97*self.columnMax/2),-round(7.97*self.rowMax/2)]]
 
+        datas3mm = {\
+            1:"HolePlateMaker/BU3.2mm.stl",\
+            2:"HolePlateMaker/ABU3.2mm.stl",\
+            3:"HolePlateMaker/NU3.2mm.stl"}
+        
+        datas48mm = {\
+            1:"HolePlateMaker/BU4.8mm.stl",\
+            2:"HolePlateMaker/ABU4.8mm.stl",\
+            3:"HolePlateMaker/NU4.8mm.stl"}
+
         if(self.value>0):
             if(type=='3mm'):
-                if(self.value==1):
-                    newMesh = s32.set32(self.row,self.column,0,'HolePlateMaker/BU3.2mm.stl')
-                elif(self.value==2):
-                    newMesh = s32.set32(self.row,self.column,0,'HolePlateMaker/ABU3.2mm.stl')
-                elif(self.value==3):
-                    newMesh = s32.set32(self.row,self.column,0,'HolePlateMaker/NU3.2mm.stl')
+                if(self.value>0 and self.value<4):
+                    newMesh = s32.set32(self.row,self.column,0,datas3mm[self.value])
                 else:
                     sys.exit('Type \'3mm\' only support 0,1,2,3.')
                 newMesh.translate(np.array([OFFSET[0][0],OFFSET[0][1],0]))
 
             elif(type=='4.8mm'):
-                if(self.value==1):
-                    newMesh = s48.set48(self.row,self.column,0,'HolePlateMaker/BU4.8mm.stl')                
-                elif(self.value==2):
-                    newMesh = s48.set48(self.row,self.column,0,'HolePlateMaker/ABU4.8mm.stl')
-                elif(self.value==3):
-                    newMesh = s48.set48(self.row,self.column,0,'HolePlateMaker/NU4.8mm.stl')
+                if(self.value>0 and self.value<4):
+                    newMesh = s48.set48(self.row,self.column,0,datas48mm[self.value])                
                 else:
-                    sys.exit('Type \'4.8mm\' only support 0,1,2.')
+                    sys.exit('Type \'4.8mm\' only support 0,1,2,3.')
                 newMesh.translate(np.array([OFFSET[1][0],OFFSET[1][1],0]))
         
             shape = newMesh.points.shape
