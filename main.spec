@@ -3,7 +3,6 @@
 
 block_cipher = None
 
-
 a = Analysis(
     ['main.py'],
     pathex=[],
@@ -19,12 +18,15 @@ a = Analysis(
     cipher=block_cipher,
     noarchive=False,
 )
+
 pyz = PYZ(a.pure, a.zipped_data, cipher=block_cipher)
 
 exe = EXE(
     pyz,
     Tree('icon',prefix='icon'),
     Tree('HolePlateMaker',prefix='HolePlateMaker'),
+    Tree('setting',prefix='setting'),
+    Tree('setting/blocks',prefix='setting/blocks'),
     a.scripts,
     a.binaries,
     a.zipfiles,

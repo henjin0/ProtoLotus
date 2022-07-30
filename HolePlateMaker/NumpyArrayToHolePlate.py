@@ -1,4 +1,5 @@
 import sys,os
+from turtle import settiltangle
 import numpy as np
 from stl import mesh
 from HolePlateMaker import set32 as s32
@@ -32,8 +33,9 @@ class OP:
     value:int
     hashValue:int
     glMesh:gl.GLMeshItem
+    blockSetting:dict
 
-    def __init__(self,plateData,color,type,row,column):
+    def __init__(self,plateData,color,type,row,column,blockSetting:dict):
         size = plateData.shape
         self.rowMax = size[0]-1
         self.columnMax = size[1]-1
@@ -42,6 +44,7 @@ class OP:
         self.value = plateData[column][row]
         self.hashValue = self.hashCalc()
         self.color = color
+        self.blockSetting = blockSetting
 
         self.createMesh(type)
 
@@ -51,27 +54,17 @@ class OP:
         OFFSET = [[-round(5*self.columnMax/2),-round(5*self.rowMax/2)],\
         [-round(7.97*self.columnMax/2),-round(7.97*self.rowMax/2)]]
 
-        datas3mm = {\
-            1:"HolePlateMaker/BU3.2mm.stl",\
-            2:"HolePlateMaker/ABU3.2mm.stl",\
-            3:"HolePlateMaker/NU3.2mm.stl"}
-        
-        datas48mm = {\
-            1:"HolePlateMaker/BU4.8mm.stl",\
-            2:"HolePlateMaker/ABU4.8mm.stl",\
-            3:"HolePlateMaker/NU4.8mm.stl"}
-
         if(self.value>0):
             if(type=='3mm'):
                 if(self.value>0 and self.value<4):
-                    newMesh = s32.set32(self.row,self.column,0,datas3mm[self.value])
+                    newMesh = s32.set32(self.row,self.column,0,self.blockSetting["datas3mm"][self.value-1])
                 else:
                     sys.exit('Type \'3mm\' only support 0,1,2,3.')
                 newMesh.translate(np.array([OFFSET[0][0],OFFSET[0][1],0]))
 
             elif(type=='4.8mm'):
                 if(self.value>0 and self.value<4):
-                    newMesh = s48.set48(self.row,self.column,0,datas48mm[self.value])                
+                    newMesh = s48.set48(self.row,self.column,0,self.blockSetting["datas48mm"][self.value-1])                
                 else:
                     sys.exit('Type \'4.8mm\' only support 0,1,2,3.')
                 newMesh.translate(np.array([OFFSET[1][0],OFFSET[1][1],0]))
@@ -98,60 +91,59 @@ class OP:
     def changeType(self,type):
         self.createMesh(type)
 
-  
-def GLViewDataPush(plateData,type,color,OPlist,row,column):
-    if(not (type=='3mm' or type=='4.8mm')):
-        sys.exit('Type support only \'3mm\' or \'4.8mm\'.')
-    
-    addData = OP(plateData,color,type,row,column)
-    OPlist.append(addData)
-    return addData,OPlist
-    
-def GLViewDataPop(plateData,type,color,OPlist,row,column):
-    if(not (type=='3mm' or type=='4.8mm')):
-        sys.exit('Type support only \'3mm\' or \'4.8mm\'.')
-    
-    changeData = list(filter(lambda op: op.hashCheck(row,column),OPlist))[0]
-    pos = OPlist.index(changeData)
-    deleteData = OPlist.pop(pos)
-    return deleteData,OPlist
+class GLViewOperation:
+    setting:dict
 
-def GLViewDataChange(plateData,type,color,OPlist,row,column):
-    if(not (type=='3mm' or type=='4.8mm')):
-        sys.exit('Type support only \'3mm\' or \'4.8mm\'.')
-    
-    beforeData = list(filter(lambda op: op.hashCheck(row,column),OPlist))[0]
-    pos = OPlist.index(beforeData)
-    afterData = OP(plateData,color,type,row,column)
-    OPlist[pos] = afterData
-    return afterData,beforeData,OPlist
+    def __init__(self,setting):
+        self.setting = setting
 
-def NumpyArrayToPlate(plateData,type):
+    def GLViewDataPush(self, plateData,type,color,OPlist,row,column):
+        if(not (type=='3mm' or type=='4.8mm')):
+            sys.exit('Type support only \'3mm\' or \'4.8mm\'.')
+        
+        addData = OP(plateData,color,type,row,column,self.setting["block"])
+        OPlist.append(addData)
+        return addData,OPlist
+        
+    def GLViewDataPop(self, plateData,type,color,OPlist,row,column):
+        if(not (type=='3mm' or type=='4.8mm')):
+            sys.exit('Type support only \'3mm\' or \'4.8mm\'.')
+        
+        changeData = list(filter(lambda op: op.hashCheck(row,column),OPlist))[0]
+        pos = OPlist.index(changeData)
+        deleteData = OPlist.pop(pos)
+        return deleteData,OPlist
+
+    def GLViewDataChange(self, plateData,type,color,OPlist,row,column):
+        if(not (type=='3mm' or type=='4.8mm')):
+            sys.exit('Type support only \'3mm\' or \'4.8mm\'.')
+        
+        beforeData = list(filter(lambda op: op.hashCheck(row,column),OPlist))[0]
+        pos = OPlist.index(beforeData)
+        afterData = OP(plateData,color,type,row,column,self.setting["block"])
+        OPlist[pos] = afterData
+        return afterData,beforeData,OPlist
+
+# STLファイル専用
+def NumpyArrayToPlate(plateData,type,blockSetting:dict):
     if(not (type=='3mm' or type=='4.8mm')):
         sys.exit('Type support only \'3mm\' or \'4.8mm\'.')
 
     size = plateData.shape
     curMesh = mesh.Mesh(np.array([], dtype=mesh.Mesh.dtype))
+
     for i in np.arange(0,size[0]):
         for j in np.arange(0,size[1]):
             if(plateData[i][j]>0):
                 if(type=='3mm'):
-                    if(plateData[i][j]==1):
-                        newMesh = s32.set32(i,j,0,'HolePlateMaker/BU3.2mm.stl')
-                    elif(plateData[i][j]==2):
-                        newMesh = s32.set32(i,j,0,'HolePlateMaker/ABU3.2mm.stl')
-                    elif(plateData[i][j]==3):
-                        newMesh = s32.set32(i,j,0,'HolePlateMaker/NU3.2mm.stl')
+                    if(plateData[i][j]>0 and plateData[i][j]<4):
+                        newMesh = s32.set32(i,j,0,blockSetting["datas3mm"][plateData[i][j]-1])
                     else:
                         sys.exit('Type \'3mm\' only support 0,1,2,3.')
                     
                 elif(type=='4.8mm'):
-                    if(plateData[i][j]==1):
-                        newMesh = s48.set48(i,j,0,'HolePlateMaker/BU4.8mm.stl')
-                    elif(plateData[i][j]==2):
-                        newMesh = s48.set48(i,j,0,'HolePlateMaker/ABU4.8mm.stl')
-                    elif(plateData[i][j]==3):
-                        newMesh = s48.set48(i,j,0,'HolePlateMaker/NU4.8mm.stl')
+                    if(plateData[i][j]>0 and plateData[i][j]<4):
+                        newMesh = s48.set48(i,j,0,blockSetting["datas48mm"][plateData[i][j]-1])
                     else:
                         sys.exit('Type \'4.8mm\' only support 0,1,2,3.')
 

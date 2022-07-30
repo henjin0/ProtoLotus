@@ -1,0 +1,14 @@
+{
+    "block":{
+        "datas3mm":[
+            "setting/blocks/BU3.2mm.stl",
+            "setting/blocks/ABU3.2mm.stl",
+            "setting/blocks/NU3.2mm.stl"
+        ],
+        "datas48mm":[
+            "setting/blocks/BU4.8mm.stl",
+            "setting/blocks/ABU4.8mm.stl",
+            "setting/blocks/NU4.8mm.stl"
+        ]
+    }
+}

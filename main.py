@@ -3,6 +3,7 @@ from PyQt6 import QtCore,QtGui, QtWidgets #, QtOpenGLWidgets
 import pyqtgraph.opengl as gl
 from ui_files import mainwindow
 from HolePlateMaker import NumpyArrayToHolePlate
+from HolePlateMaker import resourcePath as rp
 
 import numpy as np
 from stl import mesh
@@ -16,7 +17,13 @@ def resourcePath(filename):
 
 class app_1(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
 
+    setting:dict
+    glvOp:NumpyArrayToHolePlate.GLViewOperation
+
     def __init__(self):
+        
+        self.setting = self.readSetting()
+        self.glvOp = NumpyArrayToHolePlate.GLViewOperation(self.setting)
 
         self.colorlist = [QtGui.QColor(70,70,70),\
                 QtGui.QColor(96,240,168),\
@@ -72,7 +79,7 @@ class app_1(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
             datas = self.getTableValue()
             datas = np.array(datas)
 
-            curMesh = NumpyArrayToHolePlate.NumpyArrayToPlate(datas,self.holePatternCombobox.currentText())
+            curMesh = NumpyArrayToHolePlate.NumpyArrayToPlate(datas,self.holePatternCombobox.currentText(),self.setting["block"])
             curMesh.save(filepath[0])
             QtWidgets.QMessageBox.information(self, "file",f"STLファイルの出力が完了しました。\n出力先:{filepath[0]}")
 
@@ -104,7 +111,7 @@ class app_1(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
         column,row = np.where(datas != 0)
 
         for i in range(len(column)):
-                addData, self.OPlist = NumpyArrayToHolePlate.GLViewDataPush(datas,\
+                addData, self.OPlist = self.glvOp.GLViewDataPush(datas,\
                     self.holePatternCombobox.currentText(),\
                     self.colorlist2,self.OPlist,row[i],column[i])
                 self.addShowMesh(addData.glMesh)
@@ -132,7 +139,7 @@ class app_1(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
         column,row = np.where(datas != 0)
 
         for i in range(len(column)):
-            addData, self.OPlist = NumpyArrayToHolePlate.GLViewDataPush(datas,\
+            addData, self.OPlist = self.glvOp.GLViewDataPush(datas,\
                 self.holePatternCombobox.currentText(),\
                 self.colorlist2,self.OPlist,row[i],column[i])
             self.addShowMesh(addData.glMesh)
@@ -182,20 +189,20 @@ class app_1(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
 
          # note: 1になった瞬間＝数字のローテーション始まってモデルを新しく追加するとき。
         if int(self.tableWidget.item(row,column).text(),10)==1:
-            addData, self.OPlist = NumpyArrayToHolePlate.GLViewDataPush(datas,\
+            addData, self.OPlist = self.glvOp.GLViewDataPush(datas,\
                 self.holePatternCombobox.currentText(),\
                 self.colorlist2,self.OPlist,row,column)
             self.addShowMesh(addData.glMesh)
 
         # note: 0になった瞬間＝数字のローテーションが一周してモデルを消さなくてはいけなくなったとき。
         elif int(self.tableWidget.item(row,column).text(),10)==0:
-            deleteData,self.OPlist = NumpyArrayToHolePlate.GLViewDataPop(datas,\
+            deleteData,self.OPlist = self.glvOp.GLViewDataPop(datas,\
                 self.holePatternCombobox.currentText(),\
                 self.colorlist2,self.OPlist,row,column)
             self.deleteShowMesh(deleteData.glMesh)
 
         else:
-            afterData,beforeData,self.OPlist = NumpyArrayToHolePlate.GLViewDataChange(datas,\
+            afterData,beforeData,self.OPlist = self.glvOp.GLViewDataChange(datas,\
                 self.holePatternCombobox.currentText(),\
                 self.colorlist2,self.OPlist,row,column)
             self.deleteShowMesh(beforeData.glMesh)
@@ -316,7 +323,7 @@ class app_1(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
         if(cellNumber == 0):
             for i in range(len(row)):
                 if(tempData[i] != 0):
-                    deleteData,self.OPlist = NumpyArrayToHolePlate.GLViewDataPop(tableWidgetDatas,\
+                    deleteData,self.OPlist = self.glvOp.GLViewDataPop(tableWidgetDatas,\
                         self.holePatternCombobox.currentText(),\
                         self.colorlist2,self.OPlist,row[i],column[i])
                     self.deleteShowMesh(deleteData.glMesh)
@@ -325,12 +332,12 @@ class app_1(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
                 
         for i in range(len(row)):
             if(tempData[i]==0):
-                addData, self.OPlist = NumpyArrayToHolePlate.GLViewDataPush(tableWidgetDatas,\
+                addData, self.OPlist = self.glvOp.GLViewDataPush(tableWidgetDatas,\
                     self.holePatternCombobox.currentText(),\
                     self.colorlist2,self.OPlist, row[i], column[i])
                 self.addShowMesh(addData.glMesh)
             else:
-                afterData,beforeData,self.OPlist = NumpyArrayToHolePlate.GLViewDataChange(tableWidgetDatas,\
+                afterData,beforeData,self.OPlist = self.glvOp.GLViewDataChange(tableWidgetDatas,\
                 self.holePatternCombobox.currentText(),\
                 self.colorlist2,self.OPlist, row[i], column[i])
                 self.deleteShowMesh(beforeData.glMesh)
@@ -397,10 +404,16 @@ class app_1(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
                 column,row = np.where(datas != 0)
 
                 for i in range(len(column)):
-                    addData, self.OPlist = NumpyArrayToHolePlate.GLViewDataPush(datas,\
+                    addData, self.OPlist = self.glvOp.GLViewDataPush(datas,\
                         self.holePatternCombobox.currentText(),\
                         self.colorlist2,self.OPlist,row[i],column[i])
                     self.addShowMesh(addData.glMesh)
+
+    def readSetting(self):
+        with open(rp.resourcePath("./setting/setting.json"), 'r') as json_file:
+            settingData = json.load(json_file)
+            return settingData
+            
 
     def deleteShowMesh(self,deleteData):
         self.openGLWidget.removeItem(deleteData)
