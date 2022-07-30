@@ -1,5 +1,4 @@
 import sys,os
-from turtle import settiltangle
 import numpy as np
 from stl import mesh
 from HolePlateMaker import set32 as s32
