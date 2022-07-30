@@ -55,14 +55,14 @@ class OP:
 
         if(self.value>0):
             if(type=='3mm'):
-                if(self.value>0 and self.value<4):
+                if(self.value>0 and self.value<len(self.blockSetting["datas3mm"])+1):
                     newMesh = s32.set32(self.row,self.column,0,self.blockSetting["datas3mm"][self.value-1])
                 else:
                     sys.exit('Type \'3mm\' only support 0,1,2,3.')
                 newMesh.translate(np.array([OFFSET[0][0],OFFSET[0][1],0]))
 
             elif(type=='4.8mm'):
-                if(self.value>0 and self.value<4):
+                if(self.value>0 and self.value<len(self.blockSetting["datas48mm"])+1):
                     newMesh = s48.set48(self.row,self.column,0,self.blockSetting["datas48mm"][self.value-1])                
                 else:
                     sys.exit('Type \'4.8mm\' only support 0,1,2,3.')
@@ -135,13 +135,13 @@ def NumpyArrayToPlate(plateData,type,blockSetting:dict):
         for j in np.arange(0,size[1]):
             if(plateData[i][j]>0):
                 if(type=='3mm'):
-                    if(plateData[i][j]>0 and plateData[i][j]<4):
+                    if(plateData[i][j]>0 and plateData[i][j]<len(blockSetting["datas3mm"])+1):
                         newMesh = s32.set32(i,j,0,blockSetting["datas3mm"][plateData[i][j]-1])
                     else:
                         sys.exit('Type \'3mm\' only support 0,1,2,3.')
                     
                 elif(type=='4.8mm'):
-                    if(plateData[i][j]>0 and plateData[i][j]<4):
+                    if(plateData[i][j]>0 and plateData[i][j]<len(blockSetting["datas48mm"])+1):
                         newMesh = s48.set48(i,j,0,blockSetting["datas48mm"][plateData[i][j]-1])
                     else:
                         sys.exit('Type \'4.8mm\' only support 0,1,2,3.')
