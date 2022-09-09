@@ -86,6 +86,9 @@ pyinstaller main.spec
 # 操作方法
 <img width="800" alt="ツール実行画面" src="readmeImage/tutorial.png">
 
+# 技術資料や今後の動向
+気分次第で更新します。
+https://checkered-shallot-238.notion.site/Protolotus-51c786ba7c704fd1af3fa8878840d783
 
 # LICENSE
 Please read [LICENSE](LICENSE).
