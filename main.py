@@ -112,8 +112,8 @@ class app_1(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
 
         for i in range(len(column)):
                 addData, self.OPlist = self.glvOp.GLViewDataPush(datas,\
-                    self.holePatternCombobox.currentText(),\
-                    self.colorlist2,self.OPlist,row[i],column[i])
+                    self.colorlist2,self.OPlist,row[i],column[i],\
+                    self.holePatternCombobox.currentText(),4)#way仮置
                 self.addShowMesh(addData.glMesh)
         
 
@@ -140,8 +140,8 @@ class app_1(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
 
         for i in range(len(column)):
             addData, self.OPlist = self.glvOp.GLViewDataPush(datas,\
-                self.holePatternCombobox.currentText(),\
-                self.colorlist2,self.OPlist,row[i],column[i])
+                self.colorlist2,self.OPlist,row[i],column[i],\
+                self.holePatternCombobox.currentText(),3)#way仮置
             self.addShowMesh(addData.glMesh)
 
     def initTableValue(self):
@@ -190,21 +190,19 @@ class app_1(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
          # note: 1になった瞬間＝数字のローテーション始まってモデルを新しく追加するとき。
         if int(self.tableWidget.item(row,column).text(),10)==1:
             addData, self.OPlist = self.glvOp.GLViewDataPush(datas,\
-                self.holePatternCombobox.currentText(),\
-                self.colorlist2,self.OPlist,row,column)
+                self.colorlist2,self.OPlist,row,column,\
+                self.holePatternCombobox.currentText(),2)# way仮置
             self.addShowMesh(addData.glMesh)
 
         # note: 0になった瞬間＝数字のローテーションが一周してモデルを消さなくてはいけなくなったとき。
         elif int(self.tableWidget.item(row,column).text(),10)==0:
-            deleteData,self.OPlist = self.glvOp.GLViewDataPop(datas,\
-                self.holePatternCombobox.currentText(),\
-                self.colorlist2,self.OPlist,row,column)
+            deleteData,self.OPlist = self.glvOp.GLViewDataPop(self.OPlist,row,column)
             self.deleteShowMesh(deleteData.glMesh)
 
         else:
             afterData,beforeData,self.OPlist = self.glvOp.GLViewDataChange(datas,\
-                self.holePatternCombobox.currentText(),\
-                self.colorlist2,self.OPlist,row,column)
+                self.colorlist2,self.OPlist,row,column,\
+                self.holePatternCombobox.currentText(),1)#way仮置
             self.deleteShowMesh(beforeData.glMesh)
             self.addShowMesh(afterData.glMesh)
         
@@ -323,23 +321,20 @@ class app_1(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
         if(cellNumber == 0):
             for i in range(len(row)):
                 if(tempData[i] != 0):
-                    deleteData,self.OPlist = self.glvOp.GLViewDataPop(tableWidgetDatas,\
-                        self.holePatternCombobox.currentText(),\
-                        self.colorlist2,self.OPlist,row[i],column[i])
+                    deleteData,self.OPlist = self.glvOp.GLViewDataPop(self.OPlist,row[i],column[i])
                     self.deleteShowMesh(deleteData.glMesh)
-            
             return
                 
         for i in range(len(row)):
             if(tempData[i]==0):
                 addData, self.OPlist = self.glvOp.GLViewDataPush(tableWidgetDatas,\
-                    self.holePatternCombobox.currentText(),\
-                    self.colorlist2,self.OPlist, row[i], column[i])
+                    self.colorlist2,self.OPlist, row[i], column[i],\
+                    self.holePatternCombobox.currentText(),1)#way仮置
                 self.addShowMesh(addData.glMesh)
             else:
                 afterData,beforeData,self.OPlist = self.glvOp.GLViewDataChange(tableWidgetDatas,\
-                self.holePatternCombobox.currentText(),\
-                self.colorlist2,self.OPlist, row[i], column[i])
+                self.colorlist2,self.OPlist, row[i], column[i],\
+                self.holePatternCombobox.currentText(),2)#way仮置
                 self.deleteShowMesh(beforeData.glMesh)
                 self.addShowMesh(afterData.glMesh)
 
@@ -405,8 +400,8 @@ class app_1(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
 
                 for i in range(len(column)):
                     addData, self.OPlist = self.glvOp.GLViewDataPush(datas,\
-                        self.holePatternCombobox.currentText(),\
-                        self.colorlist2,self.OPlist,row[i],column[i])
+                        self.colorlist2,self.OPlist,row[i],column[i],
+                        self.holePatternCombobox.currentText(),3)#way仮置
                     self.addShowMesh(addData.glMesh)
 
     def readSetting(self):

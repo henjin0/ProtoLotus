@@ -1,3 +1,4 @@
+import string
 import sys,os
 import numpy as np
 from stl import mesh
@@ -33,8 +34,10 @@ class OP:
     hashValue:int
     glMesh:gl.GLMeshItem
     blockSetting:dict
+    type:string
+    way:int
 
-    def __init__(self,plateData,color,type,row,column,blockSetting:dict):
+    def __init__(self,plateData,color,row,column,blockSetting:dict,type,way=0):
         size = plateData.shape
         self.rowMax = size[0]-1
         self.columnMax = size[1]-1
@@ -44,26 +47,28 @@ class OP:
         self.hashValue = self.hashCalc()
         self.color = color
         self.blockSetting = blockSetting
+        self.type = type
+        self.way=way
 
-        self.createMesh(type)
+        self.createMesh()
 
 
-    def createMesh(self,type):
+    def createMesh(self):
 
         OFFSET = [[-round(5*self.columnMax/2),-round(5*self.rowMax/2)],\
         [-round(7.97*self.columnMax/2),-round(7.97*self.rowMax/2)]]
 
         if(self.value>0):
-            if(type=='3mm'):
+            if(self.type=='3mm'):
                 if(self.value>0 and self.value<len(self.blockSetting["datas3mm"])+1):
-                    newMesh = s32.set32(self.row,self.column,0,self.blockSetting["datas3mm"][self.value-1])
+                    newMesh = s32.set32(self.row,self.column,0,self.blockSetting["datas3mm"][self.value-1],self.way)
                 else:
                     sys.exit('Type \'3mm\' only support 0,1,2,3.')
                 newMesh.translate(np.array([OFFSET[0][0],OFFSET[0][1],0]))
 
-            elif(type=='4.8mm'):
+            elif(self.type=='4.8mm'):
                 if(self.value>0 and self.value<len(self.blockSetting["datas48mm"])+1):
-                    newMesh = s48.set48(self.row,self.column,0,self.blockSetting["datas48mm"][self.value-1])                
+                    newMesh = s48.set48(self.row,self.column,0,self.blockSetting["datas48mm"][self.value-1],self.way)                
                 else:
                     sys.exit('Type \'4.8mm\' only support 0,1,2,3.')
                 newMesh.translate(np.array([OFFSET[1][0],OFFSET[1][1],0]))
@@ -88,7 +93,8 @@ class OP:
         return  self.hashValue == self.hashCalcValue(row,column)
     
     def changeType(self,type):
-        self.createMesh(type)
+        self.type = type
+        self.createMesh()
 
 class GLViewOperation:
     setting:dict
@@ -96,30 +102,38 @@ class GLViewOperation:
     def __init__(self,setting):
         self.setting = setting
 
-    def GLViewDataPush(self, plateData,type,color,OPlist,row,column):
+    def GLViewDataPush(self, plateData,color,OPlist,row,column,type,way):
         if(not (type=='3mm' or type=='4.8mm')):
             sys.exit('Type support only \'3mm\' or \'4.8mm\'.')
+        if(not (way==0 or way==1 or way==2 or way==3 or way==4)):
+            sys.exit("Way support only 0,1,2,3,4")
         
-        addData = OP(plateData,color,type,row,column,self.setting["block"])
+        addData = OP(plateData,color,row,column,self.setting["block"],type,way)
         OPlist.append(addData)
         return addData,OPlist
         
-    def GLViewDataPop(self, plateData,type,color,OPlist,row,column):
-        if(not (type=='3mm' or type=='4.8mm')):
-            sys.exit('Type support only \'3mm\' or \'4.8mm\'.')
-        
+    def GLViewDataPop(self, OPlist,row,column): 
         changeData = list(filter(lambda op: op.hashCheck(row,column),OPlist))[0]
         pos = OPlist.index(changeData)
         deleteData = OPlist.pop(pos)
         return deleteData,OPlist
 
-    def GLViewDataChange(self, plateData,type,color,OPlist,row,column):
-        if(not (type=='3mm' or type=='4.8mm')):
-            sys.exit('Type support only \'3mm\' or \'4.8mm\'.')
-        
+    def GLViewDataChange(self, plateData, color, OPlist, row, column, type="", way=-1):        
         beforeData = list(filter(lambda op: op.hashCheck(row,column),OPlist))[0]
         pos = OPlist.index(beforeData)
-        afterData = OP(plateData,color,type,row,column,self.setting["block"])
+        
+        # typeに関する引数がない（変化が無い）場合
+        if(not type):
+            type = OPlist[pos].type
+
+        if(not (type=='3mm' or type=='4.8mm')):
+            sys.exit('Type support only \'3mm\' or \'4.8mm\'.')
+
+        # wayに関する引数がない（変化が無い）場合
+        if(way<0):
+            way = OPlist[pos].way
+
+        afterData = OP(plateData,color,row,column,self.setting["block"],type,way)
         OPlist[pos] = afterData
         return afterData,beforeData,OPlist
 
