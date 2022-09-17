@@ -98,6 +98,7 @@ class OP:
 
 class GLViewOperation:
     setting:dict
+    color:list[tuple[float,float,float,float]]
 
     def __init__(self,setting,color):
         self.setting = setting

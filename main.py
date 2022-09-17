@@ -32,7 +32,7 @@ class app_1(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
                 QtGui.QColor(96,96,240),\
                 QtGui.QColor(0,255,0),\
                 ]
-        self.colorlist2 = [(255/255,255/255,255/255,1),\
+        self.colorlist2:list[tuple[float,float,float,float]] = [(255/255,255/255,255/255,1),\
                 (96/(255*1.5),240/(255*1.5),168/(255*1.5),1),\
                 (240/(255*1.5),168/(255*1.5),96/(255*1.5),1),\
                 (168/(255*1.5),96/(255*1.5),240/(255*1.5),1),\
