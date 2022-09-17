@@ -79,7 +79,7 @@ class OP:
             meshdata = gl.MeshData(vertexes=points, faces=faces)
             self.glMesh = gl.GLMeshItem(meshdata=meshdata, smooth=True,\
                         drawFaces=True, drawEdges=False, edgeColor=(0, 0, 0, 1), shader='edgeHilight')
-            self.glMesh.setColor(self.color[self.value])
+            self.glMesh.setColor(self.color)
             #print(f"color={self.color[self.value}")
             self.glMesh.scale(0.1,0.1,0.1)
 
@@ -99,16 +99,17 @@ class OP:
 class GLViewOperation:
     setting:dict
 
-    def __init__(self,setting):
+    def __init__(self,setting,color):
         self.setting = setting
+        self.color = color
 
-    def GLViewDataPush(self, plateData,color,OPlist,row,column,type,way):
+    def GLViewDataPush(self, plateData,OPlist,row,column,type,way):
         if(not (type=='3mm' or type=='4.8mm')):
             sys.exit('Type support only \'3mm\' or \'4.8mm\'.')
         if(not (way==0 or way==1 or way==2 or way==3 or way==4)):
             sys.exit("Way support only 0,1,2,3,4")
         
-        addData = OP(plateData,color,row,column,self.setting["block"],type,way)
+        addData = OP(plateData,self.color[plateData[column][row]],row,column,self.setting["block"],type,way)
         OPlist.append(addData)
         return addData,OPlist
         
@@ -118,7 +119,7 @@ class GLViewOperation:
         deleteData = OPlist.pop(pos)
         return deleteData,OPlist
 
-    def GLViewDataChange(self, plateData, color, OPlist, row, column, type="", way=-1):        
+    def GLViewDataChange(self, plateData, OPlist, row, column, type="", way=-1):        
         beforeData = list(filter(lambda op: op.hashCheck(row,column),OPlist))[0]
         pos = OPlist.index(beforeData)
         
@@ -133,7 +134,7 @@ class GLViewOperation:
         if(way<0):
             way = OPlist[pos].way
 
-        afterData = OP(plateData,color,row,column,self.setting["block"],type,way)
+        afterData = OP(plateData,self.color[plateData[column][row]],row,column,self.setting["block"],type,way)
         OPlist[pos] = afterData
         return afterData,beforeData,OPlist
 
