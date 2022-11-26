@@ -9,6 +9,11 @@
             "setting/blocks/BU4.8mm.stl",
             "setting/blocks/ABU4.8mm.stl",
             "setting/blocks/NU4.8mm.stl"
+        ],
+        "datas2x2classicblock":[
+            "setting/blocks/2x2CBS.stl",
+            "setting/blocks/2x2CBHS.stl",
+            "setting/blocks/2x2CBNS.stl"
         ]
     }
 }
