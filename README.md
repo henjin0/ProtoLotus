@@ -83,6 +83,12 @@ pyuic6 ui_files/MainWindow.ui -o ui_files/MainWindow.py
 pyinstaller main.spec  
 ```
 
+なお、pyenv使用時にはpyinstallerでエラーが発生する場合がある。その場合には下記コマンドを実行してpython 3.9.1をオプション付きで再インストールしてからpyinstall main.spacを実行する。
+
+```shell:option
+PYTHON_CONFIGURE_OPTS="--enable-shared" pyenv install 3.9.1
+```
+
 # 操作方法
 <img width="800" alt="ツール実行画面" src="readmeImage/tutorial.png">
 

@@ -3,6 +3,8 @@ import numpy as np
 from stl import mesh
 from HolePlateMaker import set32 as s32
 from HolePlateMaker import set48 as s48
+from HolePlateMaker import set2x2ClassicBlock as s2x2CB
+from HolePlateMaker import set1x1ClassicBlock as s1x1CB
 from HolePlateMaker import addBlock as ab
 
 import pyqtgraph.opengl as gl
@@ -67,7 +69,21 @@ class OP:
                 else:
                     sys.exit('Type \'4.8mm\' only support 0,1,2,3.')
                 newMesh.translate(np.array([OFFSET[1][0],OFFSET[1][1],0]))
-        
+
+            elif(type=='2x2ClassicBlock'):
+                if(self.value>0 and self.value<len(self.blockSetting["datas2x2classicblock"])+1):
+                    newMesh = s2x2CB.set2x2ClassicBlock(self.row,self.column,0,self.blockSetting["datas2x2classicblock"][self.value-1])                
+                else:
+                    sys.exit('Type \'2x2ClassicBlock\' only support 0,1,2,3.')
+                newMesh.translate(np.array([OFFSET[1][0],OFFSET[1][1],0]))
+
+            elif(type=='1x1ClassicBlock'):
+                if(self.value>0 and self.value<len(self.blockSetting["datas1x1classicblock"])+1):
+                    newMesh = s1x1CB.set1x1ClassicBlock(self.row,self.column,0,self.blockSetting["datas1x1classicblock"][self.value-1])                
+                else:
+                    sys.exit('Type \'1x1ClassicBlock\' only support 0,1,2,3.')
+                newMesh.translate(np.array([OFFSET[1][0],OFFSET[1][1],0]))
+
             shape = newMesh.points.shape
             points = newMesh.points.reshape(-1, 3)
             faces = np.arange(points.shape[0]).reshape(-1, 3)
@@ -97,16 +113,16 @@ class GLViewOperation:
         self.setting = setting
 
     def GLViewDataPush(self, plateData,type,color,OPlist,row,column):
-        if(not (type=='3mm' or type=='4.8mm')):
-            sys.exit('Type support only \'3mm\' or \'4.8mm\'.')
+        if(not (type=='3mm' or type=='4.8mm' or type=='2x2ClassicBlock' or type=='1x1ClassicBlock')):
+            sys.exit('Type support only \'3mm\' or \'4.8mm\' or \'2x2ClassicBlock\ or \'1x1ClassicBlock\'.')
         
         addData = OP(plateData,color,type,row,column,self.setting["block"])
         OPlist.append(addData)
         return addData,OPlist
         
     def GLViewDataPop(self, plateData,type,color,OPlist,row,column):
-        if(not (type=='3mm' or type=='4.8mm')):
-            sys.exit('Type support only \'3mm\' or \'4.8mm\'.')
+        if(not (type=='3mm' or type=='4.8mm' or type=='2x2ClassicBlock' or type=='1x1ClassicBlock')):
+            sys.exit('Type support only \'3mm\' or \'4.8mm\' or \'2x2ClassicBlock\ or \'1x1ClassicBlock\'.')
         
         changeData = list(filter(lambda op: op.hashCheck(row,column),OPlist))[0]
         pos = OPlist.index(changeData)
@@ -114,8 +130,8 @@ class GLViewOperation:
         return deleteData,OPlist
 
     def GLViewDataChange(self, plateData,type,color,OPlist,row,column):
-        if(not (type=='3mm' or type=='4.8mm')):
-            sys.exit('Type support only \'3mm\' or \'4.8mm\'.')
+        if(not (type=='3mm' or type=='4.8mm' or type=='2x2ClassicBlock' or type=='1x1ClassicBlock')):
+            sys.exit('Type support only \'3mm\' or \'4.8mm\' or \'2x2ClassicBlock\ or \'1x1ClassicBlock\'.')
         
         beforeData = list(filter(lambda op: op.hashCheck(row,column),OPlist))[0]
         pos = OPlist.index(beforeData)
@@ -125,12 +141,11 @@ class GLViewOperation:
 
 # STLファイル専用
 def NumpyArrayToPlate(plateData,type,blockSetting:dict):
-    if(not (type=='3mm' or type=='4.8mm')):
-        sys.exit('Type support only \'3mm\' or \'4.8mm\'.')
+    if(not (type=='3mm' or type=='4.8mm' or type=='2x2ClassicBlock' or type=='1x1ClassicBlock')):
+        sys.exit('Type support only \'3mm\' or \'4.8mm\' or \'2x2ClassicBlock\ or \'1x1ClassicBlock\'.')
 
-    size = plateData.shape
     curMesh = mesh.Mesh(np.array([], dtype=mesh.Mesh.dtype))
-
+    size = plateData.shape
     for i in np.arange(0,size[0]):
         for j in np.arange(0,size[1]):
             if(plateData[i][j]>0):
@@ -146,6 +161,17 @@ def NumpyArrayToPlate(plateData,type,blockSetting:dict):
                     else:
                         sys.exit('Type \'4.8mm\' only support 0,1,2,3.')
 
+                elif(type=='2x2ClassicBlock'):
+                    if(plateData[i][j]>0 and plateData[i][j]<len(blockSetting["datas2x2classicblock"])+1):
+                        newMesh = s2x2CB.set2x2ClassicBlock(i,j,0,blockSetting["datas2x2classicblock"][plateData[i][j]-1])
+                    else:
+                        sys.exit('Type \'2x2ClassicBlock\' only support 0,1,2,3.')
+
+                elif(type=='1x1ClassicBlock'):
+                    if(plateData[i][j]>0 and plateData[i][j]<len(blockSetting["datas1x1classicblock"])+1):
+                        newMesh = s1x1CB.set1x1ClassicBlock(i,j,0,blockSetting["datas1x1classicblock"][plateData[i][j]-1])
+                    else:
+                        sys.exit('Type \'1x1ClassicBlock\' only support 0,1,2,3.')
                 
                 curMesh = ab.addBlock(curMesh, newMesh)
     
