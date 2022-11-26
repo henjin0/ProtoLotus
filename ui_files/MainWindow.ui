@@ -76,6 +76,11 @@
             <string>2x2ClassicBlock</string>
            </property>
           </item>
+          <item>
+           <property name="text">
+            <string>1x1ClassicBlock</string>
+           </property>
+          </item>
          </widget>
         </item>
         <item>
