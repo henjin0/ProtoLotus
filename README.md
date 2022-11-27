@@ -23,7 +23,7 @@ windows: windows10 home x64
 
 - windows最新版: https://drive.google.com/file/d/1kp8-8eTd5niMDkdL7OxaiZ40g0pkdsrP/view?usp=share_link
 
-- macOS最新版: https://drive.google.com/file/d/1hORbibUUdkyu-jTHyjGhKnhwCHT7BbV8/view?usp=share_link
+- macOS最新版: https://drive.google.com/file/d/1aPayCFFVJn6hLkBFraAWXUBN5TH3D5oG/view?usp=share_link
 
 - windows他バージョン: https://drive.google.com/drive/folders/1lRnMViTJTnGBnZArAat9tUMsmL3bNGBV?usp=sharing
 
@@ -91,6 +91,9 @@ PYTHON_CONFIGURE_OPTS="--enable-shared" pyenv install 3.9.1
 
 # 操作方法
 <img width="800" alt="ツール実行画面" src="readmeImage/tutorial.png">
+
+# 配置できるブロックの種類
+<img width="800" alt="ブロック種類テーブル" src="readmeImage/blockstable.png">
 
 # 技術資料や今後の動向
 気分次第で更新します。
