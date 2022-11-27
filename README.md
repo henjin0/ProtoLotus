@@ -21,7 +21,7 @@ windows: windows10 home x64
 
 下記リンクからprotolotus_mac_\[version\].zip/protolotus_windows_\[version\].zipをDL&解凍してからご使用ください。
 
-- 最新版: https://github.com/henjin0/ProtoLotus/releases/tag/%E3%82%B9%E3%83%86%E3%83%BC%E3%83%96%E3%83%AB
+- 最新版: https://github.com/henjin0/ProtoLotus/releases
 
 - windows他バージョン: https://drive.google.com/drive/folders/1lRnMViTJTnGBnZArAat9tUMsmL3bNGBV?usp=sharing
 
