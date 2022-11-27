@@ -78,6 +78,11 @@
           </item>
           <item>
            <property name="text">
+            <string>2x2CircleHoleClassicBlock</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
             <string>1x1ClassicBlock</string>
            </property>
           </item>

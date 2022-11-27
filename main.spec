@@ -25,6 +25,7 @@ exe = EXE(
     pyz,
     Tree('icon',prefix='icon'),
     Tree('HolePlateMaker',prefix='HolePlateMaker'),
+    Tree('ui_files',prefix='ui_files'),
     Tree('setting',prefix='setting'),
     Tree('setting/blocks',prefix='setting/blocks'),
     a.scripts,

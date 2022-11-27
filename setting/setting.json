@@ -15,6 +15,11 @@
             "setting/blocks/2x2CBHS.stl",
             "setting/blocks/2x2CBNS.stl"
         ],
+        "datas2x2circleholeclassicblock":[
+            "setting/blocks/2x2CBSCH.stl",
+            "setting/blocks/2x2CBHSCH.stl",
+            "setting/blocks/2x2CBNSCH.stl"
+        ],
         "datas1x1classicblock":[
             "setting/blocks/1x1CBS.stl",
             "setting/blocks/1x1CBHS.stl",
