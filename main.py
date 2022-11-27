@@ -1,7 +1,7 @@
 import sys,os
 from PyQt6 import QtCore,QtGui, QtWidgets #, QtOpenGLWidgets
 import pyqtgraph.opengl as gl
-from ui_files import mainwindow
+from ui_files import MainWindow
 from HolePlateMaker import NumpyArrayToHolePlate
 from HolePlateMaker import resourcePath as rp
 
@@ -15,7 +15,7 @@ def resourcePath(filename):
       return os.path.join(sys._MEIPASS, filename)
   return os.path.join(filename)
 
-class app_1(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
+class app_1(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
 
     setting:dict
     glvOp:NumpyArrayToHolePlate.GLViewOperation
@@ -267,7 +267,7 @@ class app_1(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
     def licenseOpenAction(self):
         msgBox = QtWidgets.QMessageBox()
         msgBox.setWindowTitle("About protolotus")
-        msgBox.setText(f"Protolotus ver.0.2.0\n© Inoue Minoru 2022\nProtoLotus is licensed under the GNU General Public License v3.0")
+        msgBox.setText(f"Protolotus ver.0.2.1\n© Inoue Minoru 2022\nProtoLotus is licensed under the GNU General Public License v3.0")
         msgBox.setIcon(QtWidgets.QMessageBox.Icon.Information)
         msgBox.setWindowIcon(QtGui.QIcon(resourcePath('icon/protolotus.png')))
         msgBox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Yes)

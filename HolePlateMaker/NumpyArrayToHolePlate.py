@@ -4,6 +4,7 @@ from stl import mesh
 from HolePlateMaker import set32 as s32
 from HolePlateMaker import set48 as s48
 from HolePlateMaker import set2x2ClassicBlock as s2x2CB
+from HolePlateMaker import set2x2CircleHoleClassicBlock as s2x2CBCH
 from HolePlateMaker import set1x1ClassicBlock as s1x1CB
 from HolePlateMaker import addBlock as ab
 
@@ -76,6 +77,13 @@ class OP:
                 else:
                     sys.exit('Type \'2x2ClassicBlock\' only support 0,1,2,3.')
                 newMesh.translate(np.array([OFFSET[1][0],OFFSET[1][1],0]))
+                
+            elif(type=='2x2CircleHoleClassicBlock'):
+                if(self.value>0 and self.value<len(self.blockSetting["datas2x2circleholeclassicblock"])+1):
+                    newMesh = s2x2CBCH.set2x2CircleHoleClassicBlock(self.row,self.column,0,self.blockSetting["datas2x2circleholeclassicblock"][self.value-1])                
+                else:
+                    sys.exit('Type \'2x2CircleHoleClassicBlock\' only support 0,1,2,3.')
+                newMesh.translate(np.array([OFFSET[1][0],OFFSET[1][1],0]))
 
             elif(type=='1x1ClassicBlock'):
                 if(self.value>0 and self.value<len(self.blockSetting["datas1x1classicblock"])+1):
@@ -113,7 +121,7 @@ class GLViewOperation:
         self.setting = setting
 
     def GLViewDataPush(self, plateData,type,color,OPlist,row,column):
-        if(not (type=='3mm' or type=='4.8mm' or type=='2x2ClassicBlock' or type=='1x1ClassicBlock')):
+        if(not (type=='3mm' or type=='4.8mm' or type=='2x2ClassicBlock' or type=='2x2CircleHoleClassicBlock' or type=='1x1ClassicBlock')):
             sys.exit('Type support only \'3mm\' or \'4.8mm\' or \'2x2ClassicBlock\ or \'1x1ClassicBlock\'.')
         
         addData = OP(plateData,color,type,row,column,self.setting["block"])
@@ -121,7 +129,7 @@ class GLViewOperation:
         return addData,OPlist
         
     def GLViewDataPop(self, plateData,type,color,OPlist,row,column):
-        if(not (type=='3mm' or type=='4.8mm' or type=='2x2ClassicBlock' or type=='1x1ClassicBlock')):
+        if(not (type=='3mm' or type=='4.8mm' or type=='2x2ClassicBlock' or type=='2x2CircleHoleClassicBlock' or type=='1x1ClassicBlock')):
             sys.exit('Type support only \'3mm\' or \'4.8mm\' or \'2x2ClassicBlock\ or \'1x1ClassicBlock\'.')
         
         changeData = list(filter(lambda op: op.hashCheck(row,column),OPlist))[0]
@@ -130,7 +138,7 @@ class GLViewOperation:
         return deleteData,OPlist
 
     def GLViewDataChange(self, plateData,type,color,OPlist,row,column):
-        if(not (type=='3mm' or type=='4.8mm' or type=='2x2ClassicBlock' or type=='1x1ClassicBlock')):
+        if(not (type=='3mm' or type=='4.8mm' or type=='2x2ClassicBlock' or type=='2x2CircleHoleClassicBlock' or type=='1x1ClassicBlock')):
             sys.exit('Type support only \'3mm\' or \'4.8mm\' or \'2x2ClassicBlock\ or \'1x1ClassicBlock\'.')
         
         beforeData = list(filter(lambda op: op.hashCheck(row,column),OPlist))[0]
@@ -141,7 +149,7 @@ class GLViewOperation:
 
 # STLファイル専用
 def NumpyArrayToPlate(plateData,type,blockSetting:dict):
-    if(not (type=='3mm' or type=='4.8mm' or type=='2x2ClassicBlock' or type=='1x1ClassicBlock')):
+    if(not (type=='3mm' or type=='4.8mm' or type=='2x2ClassicBlock' or type=='2x2CircleHoleClassicBlock' or type=='1x1ClassicBlock')):
         sys.exit('Type support only \'3mm\' or \'4.8mm\' or \'2x2ClassicBlock\ or \'1x1ClassicBlock\'.')
 
     curMesh = mesh.Mesh(np.array([], dtype=mesh.Mesh.dtype))
@@ -166,6 +174,12 @@ def NumpyArrayToPlate(plateData,type,blockSetting:dict):
                         newMesh = s2x2CB.set2x2ClassicBlock(i,j,0,blockSetting["datas2x2classicblock"][plateData[i][j]-1])
                     else:
                         sys.exit('Type \'2x2ClassicBlock\' only support 0,1,2,3.')
+
+                elif(type=='2x2CircleHoleClassicBlock'):
+                    if(plateData[i][j]>0 and plateData[i][j]<len(blockSetting["datas2x2circleholeclassicblock"])+1):
+                        newMesh = s2x2CBCH.set2x2CircleHoleClassicBlock(i,j,0,blockSetting["datas2x2circleholeclassicblock"][plateData[i][j]-1])
+                    else:
+                        sys.exit('Type \'2x2CircleHoleClassicBlock\' only support 0,1,2,3.')
 
                 elif(type=='1x1ClassicBlock'):
                     if(plateData[i][j]>0 and plateData[i][j]<len(blockSetting["datas1x1classicblock"])+1):
