@@ -10,6 +10,11 @@
             "setting/blocks/ABU4.8mm.stl",
             "setting/blocks/NU4.8mm.stl"
         ],
+        "datas48mm-cubic":[
+            "setting/blocks/BUC4.8mm.stl",
+            "setting/blocks/ABUC4.8mm.stl",
+            "setting/blocks/NUC4.8mm.stl"
+        ],
         "datas2x2classicblock":[
             "setting/blocks/2x2CBS.stl",
             "setting/blocks/2x2CBHS.stl",
