@@ -128,7 +128,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_5.setStretch(1, 5)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 977, 24))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 977, 21))
         self.menubar.setObjectName("menubar")
         self.menufiles = QtWidgets.QMenu(self.menubar)
         self.menufiles.setObjectName("menufiles")
