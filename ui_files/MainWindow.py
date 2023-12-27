@@ -44,6 +44,7 @@ class Ui_MainWindow(object):
         self.holePatternCombobox.addItem("")
         self.holePatternCombobox.addItem("")
         self.holePatternCombobox.addItem("")
+        self.holePatternCombobox.addItem("")
         self.verticalLayout_2.addWidget(self.holePatternCombobox)
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")

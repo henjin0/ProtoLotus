@@ -19,8 +19,13 @@
 基本的には最新版のOSで動作確認しています。
 
 ```
-macOS: macOS ventura 13.0
-windows: windows10 home x64　および windows 11 home x64
+- macOS
+ - macOS ventura 13.0
+- windows
+ - windows10 home x64
+ - windows10 pro x64
+ - windows 11 home x64
+ - windows 11 pro x64
 ```
 
 ### 配布リンク
