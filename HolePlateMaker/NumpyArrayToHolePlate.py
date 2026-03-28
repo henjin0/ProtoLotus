@@ -42,6 +42,7 @@ class OP:
         size = plateData.shape
         self.rowMax = size[0]-1
         self.columnMax = size[1]-1
+        self.rowCount = size[1]
         self.row = row
         self.column = column
         self.value = plateData[column][row]
@@ -111,10 +112,10 @@ class OP:
             self.glMesh.scale(0.1,0.1,0.1)
 
     def hashCalc(self):
-        return  self.row + self.columnMax*self.column
-    
+        return  self.row + self.rowCount*self.column
+
     def hashCalcValue(self,row,column):
-        return  row +  self.columnMax*column
+        return  row +  self.rowCount*column
     
     def hashCheck(self,row,column):
         return  self.hashValue == self.hashCalcValue(row,column)
@@ -130,7 +131,7 @@ class GLViewOperation:
 
     def GLViewDataPush(self, plateData,type,color,OPlist,row,column):
         if(not (type=='3mm' or type=='4.8mm' or type=='4.8mm-cubic' or type=='2x2ClassicBlock' or type=='2x2CircleHoleClassicBlock' or type=='1x1ClassicBlock')):
-            sys.exit('Type support only \'3mm\' or \'4.8mm\' or \'4.8mm-cubic\'  or \'2x2ClassicBlock\ or \'1x1ClassicBlock\'.')
+            sys.exit('Type support only \'3mm\' or \'4.8mm\' or \'4.8mm-cubic\'  or \'2x2ClassicBlock\' or \'1x1ClassicBlock\'.')
         
         addData = OP(plateData,color,type,row,column,self.setting["block"])
         OPlist.append(addData)
@@ -138,7 +139,7 @@ class GLViewOperation:
         
     def GLViewDataPop(self, plateData,type,color,OPlist,row,column):
         if(not (type=='3mm' or type=='4.8mm' or type=='4.8mm-cubic'  or type=='2x2ClassicBlock' or type=='2x2CircleHoleClassicBlock' or type=='1x1ClassicBlock')):
-            sys.exit('Type support only \'3mm\' or \'4.8mm\' or \'4.8mm-cubic\' or \'2x2ClassicBlock\ or \'1x1ClassicBlock\'.')
+            sys.exit('Type support only \'3mm\' or \'4.8mm\' or \'4.8mm-cubic\' or \'2x2ClassicBlock\' or \'1x1ClassicBlock\'.')
         
         changeData = list(filter(lambda op: op.hashCheck(row,column),OPlist))[0]
         pos = OPlist.index(changeData)
@@ -147,7 +148,7 @@ class GLViewOperation:
 
     def GLViewDataChange(self, plateData,type,color,OPlist,row,column):
         if(not (type=='3mm' or type=='4.8mm' or type=='4.8mm-cubic'  or type=='2x2ClassicBlock' or type=='2x2CircleHoleClassicBlock' or type=='1x1ClassicBlock')):
-            sys.exit('Type support only \'3mm\' or \'4.8mm\' or \'4.8mm-cubic\' or \'2x2ClassicBlock\ or \'1x1ClassicBlock\'.')
+            sys.exit('Type support only \'3mm\' or \'4.8mm\' or \'4.8mm-cubic\' or \'2x2ClassicBlock\' or \'1x1ClassicBlock\'.')
         
         beforeData = list(filter(lambda op: op.hashCheck(row,column),OPlist))[0]
         pos = OPlist.index(beforeData)
@@ -158,7 +159,7 @@ class GLViewOperation:
 # STLファイル専用
 def NumpyArrayToPlate(plateData,type,blockSetting:dict):
     if(not (type=='3mm' or type=='4.8mm' or type=='4.8mm-cubic' or type=='2x2ClassicBlock' or type=='2x2CircleHoleClassicBlock' or type=='1x1ClassicBlock')):
-        sys.exit('Type support only \'3mm\' or \'4.8mm\' or \'4.8mm-cubic\' or \'2x2ClassicBlock\ or \'1x1ClassicBlock\'.')
+        sys.exit('Type support only \'3mm\' or \'4.8mm\' or \'4.8mm-cubic\' or \'2x2ClassicBlock\' or \'1x1ClassicBlock\'.')
 
     curMesh = mesh.Mesh(np.array([], dtype=mesh.Mesh.dtype))
     size = plateData.shape
@@ -167,37 +168,37 @@ def NumpyArrayToPlate(plateData,type,blockSetting:dict):
             if(plateData[i][j]>0):
                 if(type=='3mm'):
                     if(plateData[i][j]>0 and plateData[i][j]<len(blockSetting["datas3mm"])+1):
-                        newMesh = s32.set32(i,j,0,blockSetting["datas3mm"][plateData[i][j]-1])
+                        newMesh = s32.set32(j,i,0,blockSetting["datas3mm"][plateData[i][j]-1])
                     else:
                         sys.exit('Type \'3mm\' only support 0,1,2,3.')
-                    
+
                 elif(type=='4.8mm'):
                     if(plateData[i][j]>0 and plateData[i][j]<len(blockSetting["datas48mm"])+1):
-                        newMesh = s48.set48(i,j,0,blockSetting["datas48mm"][plateData[i][j]-1])
+                        newMesh = s48.set48(j,i,0,blockSetting["datas48mm"][plateData[i][j]-1])
                     else:
                         sys.exit('Type \'4.8mm\' only support 0,1,2,3.')
 
                 elif(type=='4.8mm-cubic'):
                     if(plateData[i][j]>0 and plateData[i][j]<len(blockSetting["datas48mm-cubic"])+1):
-                        newMesh = s48c.set48c(i,j,0,blockSetting["datas48mm-cubic"][plateData[i][j]-1])
+                        newMesh = s48c.set48c(j,i,0,blockSetting["datas48mm-cubic"][plateData[i][j]-1])
                     else:
                         sys.exit('Type \'4.8mm-cubic\' only support 0,1,2,3.')
 
                 elif(type=='2x2ClassicBlock'):
                     if(plateData[i][j]>0 and plateData[i][j]<len(blockSetting["datas2x2classicblock"])+1):
-                        newMesh = s2x2CB.set2x2ClassicBlock(i,j,0,blockSetting["datas2x2classicblock"][plateData[i][j]-1])
+                        newMesh = s2x2CB.set2x2ClassicBlock(j,i,0,blockSetting["datas2x2classicblock"][plateData[i][j]-1])
                     else:
                         sys.exit('Type \'2x2ClassicBlock\' only support 0,1,2,3.')
 
                 elif(type=='2x2CircleHoleClassicBlock'):
                     if(plateData[i][j]>0 and plateData[i][j]<len(blockSetting["datas2x2circleholeclassicblock"])+1):
-                        newMesh = s2x2CBCH.set2x2CircleHoleClassicBlock(i,j,0,blockSetting["datas2x2circleholeclassicblock"][plateData[i][j]-1])
+                        newMesh = s2x2CBCH.set2x2CircleHoleClassicBlock(j,i,0,blockSetting["datas2x2circleholeclassicblock"][plateData[i][j]-1])
                     else:
                         sys.exit('Type \'2x2CircleHoleClassicBlock\' only support 0,1,2,3.')
 
                 elif(type=='1x1ClassicBlock'):
                     if(plateData[i][j]>0 and plateData[i][j]<len(blockSetting["datas1x1classicblock"])+1):
-                        newMesh = s1x1CB.set1x1ClassicBlock(i,j,0,blockSetting["datas1x1classicblock"][plateData[i][j]-1])
+                        newMesh = s1x1CB.set1x1ClassicBlock(j,i,0,blockSetting["datas1x1classicblock"][plateData[i][j]-1])
                     else:
                         sys.exit('Type \'1x1ClassicBlock\' only support 0,1,2,3.')
                 

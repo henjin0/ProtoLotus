@@ -53,6 +53,7 @@ class app_1(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
         self.pushButton.clicked.connect(self.on_push_b1)
         self.tableWidget.cellClicked.connect(self.on_clickcell)
         self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.EditTrigger.NoEditTriggers)
+        self.tableWidget.installEventFilter(self)
 
         self.initMenuAndToolbar()
 
@@ -168,6 +169,19 @@ class app_1(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
             datas.append(row)
         return datas
 
+    def eventFilter(self, obj, event):
+        if obj is self.tableWidget and event.type() == QtCore.QEvent.Type.KeyPress:
+            key_map = {
+                QtCore.Qt.Key.Key_0: 0,
+                QtCore.Qt.Key.Key_1: 1,
+                QtCore.Qt.Key.Key_2: 2,
+                QtCore.Qt.Key.Key_3: 3,
+            }
+            if event.key() in key_map:
+                self.applyModelAction(key_map[event.key()])
+                return True
+        return super().eventFilter(obj, event)
+
     def on_clickcell(self,row,column):
         if self.tableWidget.item(row,column):
 
@@ -232,13 +246,9 @@ class app_1(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
         self.toolbar.addAction(fileSaveAction)
 
         button0Action = QtGui.QAction(QtGui.QIcon(resourcePath('icon/0.png')), 'fill 0 for all selected cells', self)
-        button0Action.setShortcut('Ctrl+0')
         button1Action = QtGui.QAction(QtGui.QIcon(resourcePath('icon/1.png')), 'fill 1 for all selected cells', self)
-        button1Action.setShortcut('Ctrl+1')
         button2Action = QtGui.QAction(QtGui.QIcon(resourcePath('icon/2.png')), 'fill 2 for all selected cells', self)
-        button2Action.setShortcut('Ctrl+2')
         button3Action = QtGui.QAction(QtGui.QIcon(resourcePath('icon/3.png')), 'fill 3 for all selected cells', self)
-        button3Action.setShortcut('Ctrl+3')
 
         apply0ModelAction = lambda :self.applyModelAction(0)
         button0Action.triggered.connect(apply0ModelAction)
